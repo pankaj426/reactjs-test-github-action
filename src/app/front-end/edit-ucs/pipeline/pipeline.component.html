@@ -1,0 +1,405 @@
+<div class="messaging" [ngClass]="pipleinesLoader == true ?'min-height-page pos-rel':''">
+    <div class="display-flex side-tabs pipline-chat">
+        <div class="tab-left">
+        </div>
+        <div class="tab-right" [ngClass]="pipleinesLoader == true ?'min-height-page pos-rel tabRightLoader':''">
+            <div class="preloader-box" *ngIf="pipleinesLoader == true">
+                <div class="preloader pl-size-l">
+                    <div class="spinner-layer pl-orange">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-container *ngIf="piplines.length > 0 && pipleinesLoader == false">
+                <div class="inbox_msg">
+                    <div class="inbox_people" [ngClass]="pipeLineMsgMobChatBoxOpen == true ? 'hide' : ''">
+                        <div class="inbox_chat_border">
+                            <div class="inbox_chat scroll">
+                                <ng-container
+                                    *ngFor="let pipline of piplines | filterPipeLines:piplineSearchText; let i = index">
+                                    <!--  {{pipline | json}} -->
+                                    <div class=" chat_list {{ pipline.activeClass }}"
+                                        (click)="openPipLineMsgBox(i, pipline._id, pipline.sharedUsers, 'notification_'+pipline._id)"
+                                        style="cursor: pointer;">
+                                        <!-- active_chat -->
+                                        <div class="chat_people">
+                                            <div class="chat_ib" style="float: none;">
+                                                <h5>
+                                                    {{ pipline.ucs_title }}
+                                                    <span *ngIf="pipline.notification > 0"
+                                                        id="notification_{{pipline._id}}" class="circle-unread">{{
+                                          pipline.notification
+                                        }}</span>
+                                                </h5>
+                                                <div class="display-flex align-center mt-5">
+                                                    <div class="company-name">
+                                                        {{ pipline.org_name }}
+                                                    </div>
+                                                    <span class="chat_date ml-auto">{{
+                                            dateFormatService.momentAgoDateFormat(
+                                              pipline.created
+                                            )
+                                          }}
+                                                    </span>
+                                                    <ng-container
+                                                        *ngIf="checkNotification(pipline.notification) > checkNotification(0)">
+                                                        <ng-container
+                                                            *ngIf="checkNotification(pipline.notification) > checkNotification(90)">
+                                                            <span class="circle-unread">90+</span>
+                                                        </ng-container>
+                                                        <ng-container
+                                                            *ngIf="!checkNotification(pipline.notification) > checkNotification(90)">
+                                                            <span class="circle-unread">{{
+                                        pipline.notification
+                                      }}</span>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mesgs" [ngClass]="pipeLineMsgMobChatBoxOpen == true ? 'open' : ''">
+                        <div class="chat_connect_box">
+                            <a href="javascript:void();" (click)="togglePipeMsgsMobChatBox()"
+                                class="back-chat-arrow"></a>
+                            <div class="display-flex align-center">
+                                <div class="chat_connect_name">
+                                    {{ selectedPipeline.ucs_title }}
+                                </div>
+                                <div class="ml-auto display-flex align-center">
+                                    <div class="add-discussion-btn">
+                                        <!--  {{selectedPipeline.is_discussion}}dsds -->
+                                        <ng-container *ngIf="selectedPipeline.is_discussion == false && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser) ">
+                                            <mat-spinner-button [disabled]="!isEditable" [options]="addToDisusbtn"
+                                                (btnClick)="addDiscussion()">
+                                            </mat-spinner-button>
+                                        </ng-container>
+                                        <ng-container *ngIf="selectedPipeline.is_discussion == true && ( ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser) ">
+                                            <button mat-raised-button color="warn" class="publisBtn" [disabled]="true">
+                                                Added to Evaluate
+                                            </button>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mesgs_box">
+                            <div class="msg_history_block">
+                                <div class="msg_history">
+                                    <ng-container *ngIf="pipelinMsgLoader == true">
+                                        <div class="preloader-box msg_loader">
+                                            <div class="preloader pl-size-l">
+                                                <div class="spinner-layer pl-orange">
+                                                    <div class="circle-clipper left">
+                                                        <div class="circle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <div class="msg_pos" [ngClass]="{ msg_length: 4 > pipeLineMgs.length }">
+                                        <ng-container *ngIf="pipeLineMgs.length > 0 && pipelinMsgLoader == false">
+                                            <ng-container *ngFor="let msgs of pipeLineMgs">
+                                                <div class="incoming_msg" *ngIf="toStr(msgs.created_by) != toStr(userId)">
+                                                    <ng-container *ngIf="msgs.attachments.length > 0">
+                                                        <ng-container *ngFor="let attechment of msgs.attachments">
+                                                            <div class="rows">
+                                                                <div class="attach-in-chat">
+                                                                    <div class="attach-file-box">
+                                                                        <div class="attach-white-box">
+                                                                            <div class="attach-file-name">
+                                                                                {{attechment.file}}</div>
+                                                                            <!--  <div class="attach-file-size">130 KB</div> -->
+                                                                            <div class="display-flex align-center">
+                                                                                <div class="attach-file-icon">
+                                                                                    <!-- <i class="fas fa-file">11111</i> -->
+                                                                                    <i *ngIf="!attechment.fileSubType" class="fas fa-file"></i>
+                                                                                    <img *ngIf="attechment.fileSubType" src="assets/images/all-file-type/{{attechment.fileSubType}}.svg" width="50px" height="50px" />
+                                                                                </div>
+                                                                                <div class="ml-10 af-file">File</div>
+                                                                            </div>
+                                                                            <div class="download-btn">
+                                                                                <a href="javascript:void(0);"
+                                                                                    (click)="getDownloadPath(attechment.file)"
+                                                                                    title="Download">Download</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <div class="received_msg">
+                                                        <div class="received_withd_msg">
+                                                            <div class="reply-dropdown">
+                                                                <a href="javascript:void(0);" class="reply-arrow">
+                                                                    <img
+                                                                        src="assets/images/icon_down-arrow-small.png" />
+                                                                </a>
+                                                                <ul class="reply-dropdown-menu">
+                                                                    <li>
+                                                                        <a href="javascript:void(0);"
+                                                                            (click)="pipelineReply($event, msgs._id, msgs.message, msgs.sender_name, msgs.created)">Reply</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <p class="reply-box">
+                                                                <span class="reply-quote-text"
+                                                                    *ngIf="msgs.reply.length > 0">
+                                                                    <i class="fa fa-quote-left" aria-hidden="true"></i>
+                                                                </span>
+                                                                <em style="font-style: italic;"
+                                                                    *ngIf="msgs.reply.length > 0">{{msgs.reply[0].message}}</em>
+                                                                <span class="time_date text-left reply-box-top-border"
+                                                                    *ngIf="msgs.reply.length > 0">
+                                                                    {{msgs.reply[0].sender_name}}, {{
+                                                                    dateFormatService.momentAgoDateFormat(
+                                                                        msgs.reply[0].created
+                                                                    )
+                                                                    }}
+                                                                </span>
+                                                                <span>
+                                                                    {{ msgs.message }}
+            <!--                                                         <span class="time_date text-right">
+                                                                        {{
+                                                  dateFormatService.momentAgoDateFormat(
+                                                    msgs.created
+                                                  )
+                                                }}
+                                                                    </span> -->
+                                                                </span>
+                                                            </p>
+                                                            <div class="sender-name display-flex p-0">
+                                                                <span class="col-6 p-0 text-left">
+                                                                    {{msgs.sender_name}}
+                                                                </span>
+                                                                <span class="col-6 p-0 text-right">
+                                                                    {{
+                                                                        dateFormatService.momentAgoDateFormat(
+                                                                            msgs.created
+                                                                        )
+                                                                    }}
+                                                                </span>
+                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="outgoing_msg"
+                                                    *ngIf="toStr(msgs.created_by) == toStr(userId)">
+                                                    <ng-container *ngIf="msgs.attachments.length > 0">
+                                                        <ng-container *ngFor="let attechment of msgs.attachments">
+                                                            <div class="rows">
+                                                                <div class="attach-in-chat pull-right">
+                                                                    <div class="attach-file-box">
+                                                                        <div class="attach-white-box">
+                                                                            <div class="attach-file-name">
+                                                                                {{attechment.file}}</div>
+                                                                            <!--  <div class="attach-file-size">130 KB</div> -->
+                                                                            <div class="display-flex align-center">
+                                                                                <div class="attach-file-icon">
+                                                                                    <!-- <i class="fas fa-file">222222</i> -->
+                                                                                     <i *ngIf="!attechment.fileSubType" class="fas fa-file"></i>
+                                                                                    <img *ngIf="attechment.fileSubType" src="assets/images/all-file-type/{{attechment.fileSubType}}.svg" width="50px" height="50px" />
+                                                                                </div>
+                                                                                <div class="ml-10 af-file">File</div>
+                                                                            </div>
+                                                                            <div class="download-btn">
+                                                                                <a href="javascript:void(0);"
+                                                                                    (click)="getDownloadPath(attechment.file)"
+                                                                                    title="Download">Download</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <div class="sent_msg">
+                                                        <div class="reply-dropdown">
+                                                            <a href="javascript:void(0);" class="reply-arrow">
+                                                                <img src="assets/images/icon_down-arrow-small.png" />
+                                                            </a>
+                                                            <ul class="reply-dropdown-menu">
+                                                                <li>
+                                                                    <a href="javascript:void(0);"
+                                                                        (click)="pipelineReply($event, msgs._id, msgs.message, msgs.sender_name, msgs.created)">Reply</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <p class="reply-box">
+                                                            <span class="reply-quote-text"
+                                                                *ngIf="msgs.reply.length > 0">
+                                                                <i class="fa fa-quote-left" aria-hidden="true"></i>
+                                                            </span>
+                                                            <em style="font-style: italic;"
+                                                                *ngIf="msgs.reply.length > 0">{{msgs.reply[0].message}}</em>
+                                                            <span class="time_date text-left reply-box-top-border"
+                                                                *ngIf="msgs.reply.length > 0">
+                                                                {{msgs.reply[0].sender_name}}, {{
+                                                                dateFormatService.momentAgoDateFormat(
+                                                                msgs.reply[0].created
+                                                                )
+                                                            }}
+                                                            </span>
+                                                            <span>{{ msgs.message }}
+     <!--                                                            <span class="time_date text-right">{{
+                                                                    dateFormatService.momentAgoDateFormat(
+                                                                        msgs.created
+                                                                    )
+                                                                }}
+                                                                </span> -->
+                                                            </span>
+                                                        </p>
+                                                        <div class="sender-name display-flex">
+                                                            <span class="col-6 p-0 text-left">
+                                                                {{msgs.sender_name}}
+                                                            </span>
+                                                            <span class="col-6 p-0 text-right">
+                                                                {{
+                                                                    dateFormatService.momentAgoDateFormat(
+                                                                        msgs.created
+                                                                    )
+                                                                }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                        <div id="up"></div>
+                                    </div>
+                                </div>
+                                <div #taggParticipantList id="participantForTags"
+                                    *ngIf="showParticipants && this.participants.length > 0"
+                                    class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    <div class="card">
+                                        <div class="tableBody participantbody">
+                                            <div class="table-responsive ">
+                                                <table class="table table-hover ">
+                                                    <tbody >
+                                                        <tr (click)="selectedMenuForPipeline('all')">
+                                                            <td class="table-img">
+                                                                <mat-icon>supervisor_account</mat-icon>
+                                                            </td>
+                                                            <td>
+                                                                <div class="media-title">All</div>
+                                                            </td>
+                                                        </tr>
+                                                        <ng-container *ngFor="let participant of participants" >
+                                                            <tr *ngIf="participant._id != localStorageService.userDetails._id"
+                                                                (click)="selectedMenuForPipeline(participant.fullname, participant.id)">
+                                                                <td class="table-img">
+                                                                    <mat-icon>perm_identity</mat-icon>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="media-title">{{participant.fullname}}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="type_msg mt-10">
+                                <div class="input_msg_write">
+                                    <ng-container *ngIf="selectedAttachments.length > 0">
+                                        <div class="attach-file-block">
+                                            <ng-container *ngFor="let attachment of selectedAttachments; let i = index">
+                                                <div class="attach-file-box">
+                                                    <div class="attach-white-box">
+                                                        <div class="attach-file-icon">
+                                                            <!-- <i class="fas fa-file">3333</i> -->
+                                                            <i *ngIf="!attachment.fileSubType" class="fas fa-file"></i>
+                                                            <img *ngIf="attachment.fileSubType" src="assets/images/all-file-type/{{attachment.fileSubType}}.svg" width="50px" height="50px" />
+                                                        </div>
+                                                        <div class="attach-file-name">{{attachment.file}}</div>
+                                                        <!--  <div class="attach-file-size">130 KB</div> -->
+                                                        <a href="javascript:void(0);" (click)=removeAttachment(i)
+                                                            class="attach-close">
+                                                            <img src="assets/images/close.svg" width="20px"
+                                                                height="20px" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                            <div class="attach-file-plus" (click)="openAttechmentPopup()">
+                                                <div class="file-picker-component">
+                                                    <!-- <input type="file" class="file-hidden-input" /> -->
+                                                    <div class="btn bg-blue waves-effect add-file-label">
+                                                        <span><img src="assets/images/plus.svg" width="20px"
+                                                                height="20px" /></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="quoteMessage != '' && quoteMessageId != '' && showReplyBox">
+                                        <div class="attach-file-block">
+                                            <div class="attach-reply-box reply-text-box">
+                                                <div class="attach-white-box">
+                                                    <!-- <i class="fas fa-file">44444</i> -->
+                                                    <!-- <div class="attach-file-icon"><i class="fas fa-file"></i></div> -->
+                                                    <i class="fa fa-quote-left" aria-hidden="true"></i>
+                                                    <div class="">
+                                                        {{quoteMessage}}
+                                                    </div>
+                                                            <div class="attach-file-name">{{quoteMessageSender}}, {{ dateFormatService.momentAgoDateFormat(
+                                            quoteMessageDate
+                                          ) }}</div>
+                                                    <!--  <div class="attach-file-size">130 KB</div> -->
+                                                    <a href="javascript:void(0);" (click)=removeQuoteMessage()
+                                                        class="attach-close">
+                                                        <img src="assets/images/blue-cancel.svg" width="15px"
+                                                            height="15px" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <form (submit)="sendMessage()" name="frm">
+                                        <div class="display-flex align-center add-attach-pin ">
+                                            <!--  <span class="emoji-block"></span> -->
+                                            <a href="javascript:void(0);" class="attachment_icon"
+                                                (click)="openAttechmentPopup()">
+                                                <i class="material-icons">attach_file</i>
+                                            </a>
+                                            <textarea autosize autocomplete="off" #pipelineMessage type="text"
+                                                class="write_msg" name="messageToSend" [minRows]="1" [maxRows]="4"
+                                                [readonly]="!isEditable" [(ngModel)]="messageToSend"
+                                                (keypress)="checkInputForPipeline($event)"
+                                                (keydown)="keyDownHandlerForPipeline($event)"
+                                                (focusout)="getPipelineDraftMessage()"
+                                                placeholder="Type a message" trim="blur"></textarea>
+                                            <button class="msg_send_btn" [disabled]="!isEditable" type="submit">
+                                                <!-- <i class="fa fa-paper-plane" aria-hidden="true"></i> -->
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+<div class="text-center m-t-30" *ngIf="piplines.length == 0 && pipleinesLoader == false">
+    <div class="no-message-box text-center">
+        <div class="no-msg-img">
+            <img src="assets/images/no-message-img.png" />
+        </div>
+        <div class="no-msg-heading">No pipeline initiated yet.</div>
+        <div class="no-msg-content maxw-50">You can initiate a pipeline via {{tabTitle}} tab.</div>
+    </div>
+</div>

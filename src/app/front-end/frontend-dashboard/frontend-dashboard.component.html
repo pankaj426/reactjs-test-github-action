@@ -1,0 +1,244 @@
+<section class="content ml-0 mr-0">
+
+    <div class="preloader-box" *ngIf="loader">
+        <div class="preloader pl-size-l">
+            <div class="spinner-layer pl-orange">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dash-pt-45 border-user-wise">
+        <div class="page-sec">
+            <div class="front-dashboard">
+                <div class="no-message-box text-center" *ngIf="usecaseSolutions.length == 0 && loader == false">
+                    <!-- *ngIf="usecaseSolutions.length == 0 && loader == false" -->
+                    <div class="dash-list-block">
+                        <div class="dashboard-heading">Innovation Workflow</div>
+                        <ul>
+                            <li>
+                                <div class="dash-list-white-box">
+                                    <img src="assets/images/dash-icon1.svg" width="100px" height="100px" />
+                                </div>
+                                <div class="dash-list-title">Add a <br />{{buttonTitle}}</div>
+                            </li>
+                            <li>
+                                <div class="dash-list-white-box">
+                                    <img src="assets/images/dash-icon2.svg" width="70px" height="65px" />
+                                </div>
+                                <div class="dash-list-title">Collaborate with <br />team</div>
+                            </li>
+                            <li>
+                                <div class="dash-list-white-box">
+                                    <img src="assets/images/dash-icon3.svg" width="81px" height="81px" />
+                                </div>
+                                <div class="dash-list-title">Discover <br />{{findText}}</div>
+                            </li>
+                            <li>
+                                <div class="dash-list-white-box">
+                                    <img src="assets/images/dash-icon4.svg" width="68px" height="68px" />
+                                </div>
+                                <div class="dash-list-title">Communicate and <br />Evaluate</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="no-msg-img">
+                        <img src="assets/images/no-msg-dashboard.png" />
+                    </div>
+                    <div class="no-msg-heading">Welcome to Enterprise Innovation Platform
+                        
+                    </div> -->
+                    <!-- <div class="no-msg-content" *ngIf="isStartup == false">
+                        As a Corporate you can start by posting a Use Case. We will match the use case with startup
+                        solutions which will show up under solutions tab.<br />
+                        For assistance email us to <a href="mailto:janus@thexfuture.com">janus@thexfuture.com</a>
+                    </div>
+                    <div class="no-msg-content" *ngIf="isStartup == true">
+                        As a Startup you can start by posting a solution. We will match the solution with corporate use
+                        cases which will show up under use cases tab.<br />
+                        For assistance email us to <a href="mailto:janus@thexfuture.com">janus@thexfuture.com</a>
+                    </div> -->
+                    <!-- <div class="text-center">
+                        <div class="pos-rel inline-block mt-50 no-msg-btn-block">
+                            <a href="javascript:void(0);" class="red-btn post-solution-btn"
+                                *ngIf="showInputBox == 'hideBox'" (click)="showHideInputBox('showBox')">Post a
+                                {{buttonTitle}}</a>
+                            <div class="solution-field-box" *ngIf="showInputBox == 'showBox'">
+                                <input type="text" [(ngModel)]="cardTitle" name="cardTitle"
+                                    minlength="{{ucstitleMinLength}}" class="add-solution-input"
+                                    placeholder="Enter title...">
+                                <div class="field-action">
+                                    <a href="javascript:void(0)" (click)="showHideInputBox('hideBox')" class="close"><i
+                                            class="material-icons">close</i></a>
+                                    <a href="javascript:void(0)" (click)="saveCard()" class="check"><i
+                                            class="material-icons">check</i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div *ngIf="usecaseSolutions.length > 0 && loader == false">
+                    <div *ngIf="usecaseSolutions[0].status !== 'published' 
+                                    && usecaseSolutions.length == 1
+                                    && userId == usecaseSolutions[0].created_by " style="margin-bottom: 7px;">
+                        Congratulations on adding the first {{buttonTitle}}. Currently, it is unpublished. <a
+                            href="javascript:void(0);"
+                            (click)="redirectoEditditUcs(usecaseSolutions[0][0]._id,usecaseSolutions[0][0].title,'','', usecaseSolutions[0][0].type, usecaseSolution[0].role, 'redirectoEditditUcs')">Click
+                            here</a> to continue editing and publish it once ready.
+                    </div>
+                    <div *ngFor="let usecaseSolution of usecaseSolutions; let index = index;" title="">
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.corporateAdmin)"  class="normal-dash-title">Use Cases</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.corporateGuestUser)"  class="guest-dash-title">Guest Use Cases</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.corporateUser)"  class="normal-dash-title">Use Cases</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.startupAdmin)"  class="normal-dash-title">Solutions</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.startupUser)"  class="normal-dash-title">Solutions</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.startupGuestUser)"  class="guest-dash-title">Guest Solutions</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.corporateSampleUser)"  class="guest-dash-title">Sample Usecases</div>
+                        <div *ngIf="(usecaseSolutions.length >= 0 && loader == false) && (usecaseSolution.role == userRoles.startupSampleUser)"  class="guest-dash-title">Sample Solutions</div>
+                        <div class="row">
+                            <div class="col-md-4" *ngFor="let usecaseSolu of usecaseSolution.data; let ind= index;" title="{{usecaseSolu.title}}">
+                                <div class="mb-20">
+                                    <div class="card custom-card mb-0">
+                                        <div class="body">
+                                            <div class="display-flex align-center guest-participant-status" >
+                                                <div class="status-tag published" *ngIf="usecaseSolu.status === 'published'">
+                                                    Published
+                                                </div>
+                                                <div class="status-tag unpublished" *ngIf="usecaseSolu.status !== 'published'">
+                                                    Unpublished
+                                                </div>
+                                                <div class="participant-block" *ngIf="usecaseSolu.sharedUsers.length > 0 && usecaseSolu.sharedUsers.length <= 4"  style="cursor: pointer;">
+                                                    <div class="participant-label">Participants</div> 
+                                                    <div  (click)="openUserListPopup(usecaseSolu._id,usecaseSolu.created_by,'invite',usecaseSolution.role, usecaseSolu.fullname,index,ind, usecaseSolu.is_sample)" class="pos-rel w-custom">
+                                                        <ng-container  *ngFor="let users of usecaseSolu.sharedUsers; let i = index;"><sapn class="pb-user pb-user{{i+1}}"   title="{{users.fullname}}">{{users.fullname.substr(0,1)}}<ng-container *ngIf="users.fullname.split(' ')[1] !=undefined">{{users.fullname.split(" ")[1].substr(0,1)}}</ng-container></sapn>    
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                                <div class="participant-block" *ngIf="usecaseSolu.sharedUsers.length >= 5">
+                                                    <div class="participant-label">Participants</div> 
+                                                    <div (click)="openUserListPopup(usecaseSolu._id,usecaseSolu.created_by,'invite',usecaseSolution.role, usecaseSolu.fullname,index,ind, usecaseSolu.is_sample)" class="pos-rel w-custom" style="cursor: pointer;" >
+                                                        <ng-container >
+                                                            <sapn class="pb-user pb-user1"   title="{{usecaseSolu.sharedUsers[0].fullname}}">{{usecaseSolu.sharedUsers[0].fullname.substr(0,1)}}<ng-container *ngIf="usecaseSolu.sharedUsers[0].fullname.split(' ')[1] !=undefined">{{usecaseSolu.sharedUsers[0].fullname.split(" ")[1].substr(0,1)}}</ng-container></sapn>
+                                                            <sapn class="pb-user pb-user2"   title="{{ usecaseSolu.sharedUsers[1].fullname}}">{{ usecaseSolu.sharedUsers[1].fullname.substr(0,1)}} <ng-container *ngIf="usecaseSolu.sharedUsers[1].fullname.split(' ')[1] != undfined">{{usecaseSolu.sharedUsers[1].fullname.split(" ")[1].substr(0,1)}}</ng-container></sapn> 
+                                                            <sapn class="pb-user pb-user3"   title="{{ usecaseSolu.sharedUsers[2].fullname}}">{{ usecaseSolu.sharedUsers[2].fullname.substr(0,1) }}<ng-container *ngIf="usecaseSolu.sharedUsers[2].fullname.split(' ')[1] != undfined">{{usecaseSolu.sharedUsers[2].fullname.split(" ")[1].substr(0,1)}}</ng-container></sapn>    
+                                                            <sapn class="pb-user pb-user4"   title="{{ usecaseSolu.sharedUsers[3].fullname}}">{{ usecaseSolu.sharedUsers[3].fullname.substr(0,1) }}<ng-container *ngIf="usecaseSolu.sharedUsers[3].fullname.split(' ')[1] != undfined">{{usecaseSolu.sharedUsers[3].fullname.split(" ")[1].substr(0,1)}}</ng-container></sapn>    
+                                                            <sapn class="pb-user pb-user5"   title="{{ usecaseSolu.sharedUsers[4].fullname}}">{{ usecaseSolu.sharedUsers[4].fullname.substr(0,1)}} <ng-container *ngIf="usecaseSolu.sharedUsers[4].fullname.split(' ')[1] != undfined">{{usecaseSolu.sharedUsers[4].fullname.split(" ")[1].substr(0,1)}}</ng-container></sapn>  
+                                                        </ng-container>                                                        
+                                                    </div>
+                                                    <span class="pb-total-value" *ngIf="usecaseSolu.sharedUsers.length > 5">+{{( usecaseSolu.sharedUsers.length) - 5}}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="dash-heading" style="cursor: pointer;" (contextmenu)="redirectoEditditUcs(usecaseSolu._id,usecaseSolu.title,'','', usecaseSolu.type, usecaseSolution.role, 'redirectoEditditUcsOnNewPage')"
+                                                (click)="redirectoEditditUcs(usecaseSolu._id,usecaseSolu.title,'','', usecaseSolu.type, usecaseSolution.role, 'redirectoEditditUcs')">
+                                                <h2>
+                                                    {{usecaseSolu.title}}
+                                                </h2>
+                                            </div>
+                                            <div class="dashboard-content"
+                                                (click)="redirectoEditditUcs(usecaseSolu._id,usecaseSolu.title,'','', usecaseSolu.type, usecaseSolution.role, 'redirectoEditditUcs')"
+                                                title="Edit" style="cursor: pointer;">
+                                                <ng-container *ngIf="usecaseSolu.type == 'usecase'">
+                                                    <ng-container *ngIf="usecaseSolu.short_description != ''">
+                                                        {{usecaseSolu.short_description}}
+                                                    </ng-container>
+                                                    <ng-container *ngIf="(usecaseSolu.short_description == '')">
+                                                        <div class="text-left">
+                                                            Click here to add
+                                                            description!
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                                <ng-container *ngIf="usecaseSolu.type == 'solution'">
+                                                    <ng-container *ngIf="(usecaseSolu.additional_fields)">
+                                                        <ng-container *ngIf="(usecaseSolu.additional_fields.summary!= '')">
+                                                            {{usecaseSolu.additional_fields.summary}}
+                                                        </ng-container>
+                                                        <ng-container *ngIf="(usecaseSolu.additional_fields.summary == undefined)">
+                                                            <div class="text-left">
+                                                                Click here to add
+                                                                description!
+                                                            </div>
+                                                        </ng-container>
+                                                    </ng-container>
+                                                    <ng-container *ngIf="(!usecaseSolu.additional_fields)">
+                                                        <div class="text-left">
+                                                            Click here to add
+                                                            description!
+                                                        </div>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                        <div class="footer">
+                                            <div class="display-flex align-center">
+                                                <div class="by-user-name" *ngIf="usecaseSolu.fullname">
+                                                    <div>By</div>
+                                                    <div class="text-left">
+                                                        <span>{{usecaseSolu.fullname}}</span>
+                                                        <div class="publish-time">
+                                                            {{  dateFormat.momentAgoDateFormat(
+                                                                usecaseSolu.created
+                                                            )}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-auto action-icon-block">
+                                                    <a href="javascript:void(0);" class="icon"
+                                                        title="View {{usecaseSolu.title}}"
+                                                        (click)="redirectoEditditUcs(usecaseSolu._id,usecaseSolu.title,'','', usecaseSolu.type, usecaseSolution.role, 'redirectoEditditUcs')"
+                                                        *ngIf="usecaseSolu.status === 'published'">
+                                                        <img src="assets/images/card-icon1.svg" />
+                                                        <span class="red-circle"
+                                                            *ngIf="usecaseSolu.relevant_notification > 0"></span>
+                                                    </a>
+                                                    <a href="javascript:void(0);" class="icon" title="View pipeline messages"
+                                                        (click)="redirectoEditditUcs(usecaseSolu._id,usecaseSolu.title,'viewNotification','pipline', usecaseSolu.type, usecaseSolution.role, 'redirectoEditditUcs')"
+                                                        *ngIf="usecaseSolu.status === 'published'">
+                                                        <img src="assets/images/card-icon2.svg" />
+                                                        <span class="red-circle" *ngIf="usecaseSolu.notification > 0"></span>
+                                                    </a>
+                                                    <a href="javascript:void(0);" title="View discussion messages" class="icon"
+                                                        (click)="redirectoEditditUcs(usecaseSolu._id,usecaseSolu.title,'viewNotification','discussion', usecaseSolu.type, usecaseSolution.role, 'redirectoEditditUcs')">
+                                                        <img src="assets/images/card-icon3.svg" />
+                                                        <span class="red-circle"
+                                                            *ngIf="usecaseSolu.discussion_notification > 0"></span>
+                                                    </a>
+                                                    <a href="javascript:void(0);"
+                                                        (click)="openSharePopup(usecaseSolu._id,usecaseSolu.created_by,'share', usecaseSolu.is_sample)"
+                                                        class="icon" *ngIf="(usecaseSolu.status === 'published') &&
+                                                    (userRole == 'corporateAdmin' ||
+                                                    userRole == 'corporateUser') &&
+                                                    (usecaseSolution.role != 'corporateGuestUser' &&
+                                                    usecaseSolution.role != 'startupGuestUser') ">
+                                                        <img src="assets/images/card-icon4.svg" />
+                                                    </a>
+                                                    <!--  
+                                                    <share-button button="linkedin" text="linkedin" theme="outline"
+                                                    class="btn-share" url="https://www.wedigtech.com"
+                                                    title="{{usecaseSolu.title}}"
+                                                    description="{{usecaseSolu.short_description}}">
+                                                </share-button> -->
+                                                    <a href="javascript:void(0);" title="Share" class="icon"
+                                                        (click)="openUserListPopup(usecaseSolu._id,usecaseSolu.created_by,'invite',usecaseSolution.role, usecaseSolu.fullname,'', '', usecaseSolu.is_sample)"
+                                                        title="share" *ngIf="(usecaseSolution.role != 'corporateGuestUser' &&
+                                                    usecaseSolution.role != 'startupGuestUser') "> 
+                                                        <img src="assets/images/card-icon5.svg" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <!--  <div class="dash-see-overview">
+                                        <a href="#">See Overview</a>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,236 @@
+<ng-container *ngIf="classReference.authenticated == true">
+  <ng-container *ngIf="localStorageService.userDetails.roles == userRoles.cgAdmin">
+    <nav #navbar class="navbar active">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="#" onClick="return false;" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#navbar-collapse" aria-expanded="false"></a>
+          <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event, 'overlay-open')"></a>
+          <a class="navbar-brand" routerLink="dashboard/main">
+            <img src="assets/images/x-future.svg" alt="" style="max-height: 34px;" />
+            <!-- <span class="logo-name">Smart</span> -->
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="pull-left collapse-menu-icon">
+            <li>
+              <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse">
+                <mat-icon>menu</mat-icon>
+              </button>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!-- Full Screen Button -->
+            <!--  <li class="fullscreen">
+                        <button mat-icon-button (click)="callFullscreen()" class=" nav-notification-icons">
+                            <mat-icon>fullscreen</mat-icon>
+                        </button>
+                    </li> -->
+            <!-- #END# Full Screen Button -->
+            <!-- #START# Notifications-->
+            <!--   <li class="dropdown">
+                        <button mat-icon-button data-toggle="dropdown" class=" nav-notification-icons">
+                            <mat-icon>notifications_none</mat-icon>
+                            <span class="label-count bg-orange"></span>
+                        </button>
+                        <ul class="dropdown-menu pullDown">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu" style="position: relative; max-width: 600px; max-height: 200px;"
+                                    [perfectScrollbar]>
+                                    <li>
+                                        <a href="#" *ngFor="let notification of notifications" onClick="return false;">
+                                            <span class="table-img msg-user">
+                                                <img src="{{notification.userImg}}" alt="">
+                                            </span>
+                                            <span class="menu-info">
+                                                <span class="menu-title">{{notification.userName}}</span>
+                                                <span class="menu-desc">
+                                                    <i class="material-icons">access_time</i> {{notification.time}}
+                                                </span>
+                                                <span class="menu-desc">{{notification.message}}</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="#" onClick="return false;">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </li> -->
+            <!-- #END# Notifications-->
+            <li class="dropdown user_profile">
+              <a href="#" onClick="return false;" data-toggle="dropdown" role="button">
+                <img src="assets/images/user.png" class="rounded-circle" width="32" height="30" alt="User"b style="background-color: black;" />
+              </a>
+              <ul class="dropdown-menu">
+                <li class="body">
+                  <ul class="user_dw_menu">
+                    <!--  <li>
+                                        <a href="#" onClick="return false;">
+                                            <mat-icon aria-hidden="false" class="mr-2 ">person</mat-icon>Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" onClick="return false;">
+                                            <mat-icon aria-hidden="false" class="mr-2 ">feedback</mat-icon>Feedback
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" onClick="return false;">
+                                            <mat-icon aria-hidden="false" class="mr-2 ">help</mat-icon>Help
+                                        </a>
+                                    </li> -->
+                    <li>
+                      <a (click)="logout()">
+                        <mat-icon aria-hidden="false" class="mr-2">power_settings_new </mat-icon>Logout
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <!-- #END# Tasks -->
+            <!-- <li class="pull-right">
+                        <button mat-icon-button (click)="toggleRightSidebar()"
+                            class="nav-notification-icons js-right-sidebar">
+                            <mat-icon id="settingBtn">settings</mat-icon>
+                        </button>
+                    </li> -->
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </ng-container>
+  <ng-container *ngIf="localStorageService.userDetails.roles != userRoles.cgAdmin && showEditUscHeader == false">
+    <nav #navbar class="navbar active custom-navbar"
+      [ngClass]="[isStartup == 2 ? 'dash-startup-border' : '' || isStartup == 1 ? 'dash-corporate-border' : '' || isStartup == 3 ? 'guest-user-bg' : '']"> <!--For guest use class "guest-user-bg"-->
+      <div class="container-fluid">
+        <div class="title-box">
+          <ng-container  *ngIf="localStorageService.userDetails.redirect != true">
+            <a title="Go to dashboard" href="javascript:void(0);" (click)="redirectToDashboard()" class="home-icon">
+              <span class="home-logo"><img src="assets/images/cg-logo.svg" /></span>
+              <span class="topbar-heading" *ngIf="!isGuest">
+                <ng-contariner *ngIf="!isTitleEditable" id="compnyheader"> {{pageTitle}}</ng-contariner>
+              </span>
+              <span class="topbar-heading" *ngIf="isGuest">
+                <ng-contariner >Welcome Guest! <span style="font-size:small;padding-left:10px;"> You are a guest user</span></ng-contariner>
+              </span>
+            </a>
+          </ng-container>
+          <ng-container  *ngIf="localStorageService.userDetails.redirect == true">
+            <a title="Go to dashboard" href="javascript:void(0);"  class="home-icon">
+              <span class="home-logo"><img src="assets/images/cg-logo.svg" /></span>
+              <span  class="topbar-heading" *ngIf="!isGuest">
+                <ng-contariner *ngIf="!isTitleEditable"> {{pageTitle}}</ng-contariner>
+              </span>
+              <span class="topbar-heading" *ngIf="isGuest">
+                <ng-contariner >Welcome Guest! <span style="font-size:small;padding-left:10px;"> You are a guest user</span></ng-contariner>
+              </span>
+            </a>
+          </ng-container>
+
+          <!--    <ng-contariner *ngIf="isTitleEditable">
+            <div class="editable-field-header">
+              <form class="register-form register-custom-form" [formGroup]="ucsForm">
+                <div class="rcf-group" [ngClass]="{'editable': !f.title.disabled}">
+                  <div class="field-action">
+                    <a href="javascript:void(0)" (click)="makeEabelDisableForm('title', 'enable')"
+                      *ngIf="f.title.disabled" class="editDesc"><i class="material-icons">mode_edit</i></a>
+                    <a href="javascript:void(0)" (click)="makeEabelDisableForm('title', 'disable')"
+                      *ngIf="!f.title.disabled"><i class="material-icons">close</i></a>
+                    <a href="javascript:void(0)" (click)="saveUcs('title')" *ngIf="!f.title.disabled"><i
+                        class="material-icons">check</i></a>
+                  </div>
+                  <input matInput formControlName="title" required maxlength="{{titleMaxLength}}"
+                    minlength="{{ucstitleMinLength}}" id="title" />
+                </div>
+              </form>
+            </div>
+          </ng-contariner> -->
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown user_profile">
+              <a href="#" onClick="return false;" data-toggle="dropdown" role="button" class="">
+                <div class="display-flex align-center">
+                  <div class="header-user-name" >
+
+                    <span style="font-size: small;font-family: inherit;"> Welcome  </span><span>{{fullname}}</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div  [ngClass]="isGuest ? 'rounded-circle guest-title-name-short' : 'rounded-circle title-name-short'">
+                    <span>{{ fullname.split(' ')[0].substr(0,1) }}</span><span>{{fullname.split(' ')[1]!=undefined?fullname.split(' ')[1].substr(0,1):"" }}</span>
+                  </div>
+                </div>
+              </a>
+              <ul class="dropdown-menu pullDown">
+                <li class="body">
+                  <ul class="user_dw_menu">
+                    <li (click)="redirectToOrgProfile()" style="cursor: pointer;"  *ngIf="localStorageService.userDetails.roles == userRoles.startupGuestUser || localStorageService.userDetails.roles != userRoles.startupGuestUser && localStorageService.userDetails.roles != userRoles.corporateGuestUser">
+                      <a>
+                        <span class="drop-icon company-icon"></span>
+                        <ng-container
+                          *ngIf="localStorageService.userDetails.roles == userRoles.startupGuestUser || localStorageService.userDetails.roles == userRoles.startupAdmin || localStorageService.userDetails.roles == userRoles.startupUser">
+                          Startup Profile
+                        </ng-container>
+                        <ng-container
+                          *ngIf="localStorageService.userDetails.roles == userRoles.corporateGuestUser ||localStorageService.userDetails.roles == userRoles.corporateAdmin || localStorageService.userDetails.roles == userRoles.corporateUser">
+                          Company Profile
+                        </ng-container>
+                      </a>
+                    </li>
+                    <li (click)="openProfilePopup('userprofile')" style="cursor: pointer;">
+                      <a>
+                        <span class="drop-icon user-icon"></span> User Profile
+                      </a>
+                    </li>
+                    <li (click)="openProfilePopup('changePassword')" style="cursor: pointer;"><a>
+                        <span class="drop-icon change-pwd-icon"></span> Change Password
+                      </a>
+                    </li>
+                    <li (click)="openProfilePopup('support')" style="cursor: pointer;">
+                      <a>
+                        <span class="drop-icon support-icon"></span> Support & Feedback
+                      </a>
+                    </li>
+                    <li (click)="logout()" style="cursor: pointer;">
+                      <a>
+                        <span class="drop-icon logout-icon"></span> Logout
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <ng-container *ngIf="localStorageService.userDetails.redirect != true">
+            <div class="header-btn" *ngIf="(localStorageService.userDetails.roles != userRoles.corporateGuestUser && localStorageService.userDetails.roles != userRoles.startupGuestUser)">
+
+              <button type="button" class="btn bg-red waves-effect"
+                (click)="makeEabelDisableForm('title', 'enable')">{{buttonTitle}}</button>
+              <form class="register-form register-custom-form" [formGroup]="ucsForm">
+                <div class="solution-field-box" *ngIf="!f.title.disabled">
+                  <input type="text" minlength="ucstitleMinLength" maxlength="titleMaxLength" formControlName="title"
+                    required name="title" class="add-solution-input" placeholder="Enter title..." trim="blur">
+                  <div class="field-action">
+                    <a  *ngIf="!showActionIcon" href="javascript:void(0)" class="close"><i class="material-icons"
+                        >close</i></a>
+                    <a  *ngIf="!showActionIcon" href="javascript:void(0)" class="check"><i class="material-icons"
+                        >check</i></a>
+                    <a  *ngIf="showActionIcon" href="javascript:void(0)" class="close"><i class="material-icons"
+                        (click)="makeEabelDisableForm('title', 'disable')">close</i></a>
+                    <a  *ngIf="showActionIcon" href="javascript:void(0)" class="check"><i class="material-icons"
+                        (click)="saveTitle()">check</i></a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </ng-container>
+
+        </div>
+      </div>
+    </nav>
+  </ng-container>
+</ng-container>

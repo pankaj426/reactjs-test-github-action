@@ -1,0 +1,421 @@
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="breadcrumb breadcrumb-style">
+                        <li class="breadcrumb-item">
+                            <h4 class="page-title">Promoted Use-cases List</h4>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-line">
+                    <div class="tab-content">
+                        <div class="tab-pane active fontawesome-demo" id="tab1">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="card">
+                                        <div class="body">
+                                            <div class="table-responsive">
+                                                <table class="custom-table">
+                                                    <thead class="text-center">
+                                                        <tr>
+                                                            <th *ngFor="let displayedColumn of displayedColumns">
+                                                                {{ displayedColumn}}
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="text-center">
+                                                        <tr *ngFor="let columnValue of columnValues; let i = index">
+                                                            <td>
+                                                                {{ columnValue.title }}
+                                                            </td>
+                                                            <td>
+                                                                {{ columnValue.short_description }}
+                                                            </td>
+                                                            <td>
+                                                                {{ columnValue.org_name }}
+                                                            </td>
+                                                            <td>
+                                                                {{ columnValue.link }}
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-warning br-15"
+                                                                    (click)="openShareLinkPopup(columnValue.ucs_id)">
+                                                                    Embed URL
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <!-- context menu start -->
+                                                <!-- <div style="visibility: hidden; position: fixed"
+                                                    [style.left]="contextMenuPosition.x"
+                                                    [style.top]="contextMenuPosition.y"
+                                                    [matMenuTriggerFor]="contextMenu">
+                                                </div>
+                                                <mat-menu #contextMenu="matMenu">
+                                                    <ng-template matMenuContent let-item="item">
+                                                        <button mat-menu-item (click)="addNew()">
+                                                            <mat-icon>add_box</mat-icon>
+                                                            <span>Add Record</span>
+                                                        </button>
+                                                        <button mat-menu-item (click)="editCall(item)">
+                                                            <mat-icon>create</mat-icon>
+                                                            <span>Edit Record</span>
+                                                        </button>
+                                                        <button mat-menu-item (click)="deleteItem(item)">
+                                                            <mat-icon>delete</mat-icon>
+                                                            <span>Delete Record</span>
+                                                        </button>
+                                                        <button mat-menu-item (click)="refresh()">
+                                                            <mat-icon>refresh</mat-icon>
+                                                            <span>Refresh Record</span>
+                                                        </button>
+                                                        <button mat-menu-item disabled>
+                                                            <mat-icon>no_encryption</mat-icon>
+                                                            <span>Disable</span>
+                                                        </button>
+                                                        <button mat-menu-item [matMenuTriggerFor]="nestedmenu">
+                                                            <mat-icon>list_alt</mat-icon>
+                                                            <span> Nested Menu</span>
+                                                        </button>
+                                                    </ng-template>
+                                                </mat-menu>
+                                                <mat-menu #nestedmenu="matMenu">
+                                                    <button mat-menu-item>
+                                                        <mat-icon>mail_outline</mat-icon>
+                                                        <span>Item 1</span>
+                                                    </button>
+                                                    <button mat-menu-item>
+                                                        <mat-icon>call</mat-icon>
+                                                        <span>Item 2</span>
+                                                    </button>
+                                                    <button mat-menu-item>
+                                                        <mat-icon>chat</mat-icon>
+                                                        <span>Item 3</span>
+                                                    </button>
+                                                </mat-menu> -->
+                                                <!-- context menu end -->
+                                                <!-- <div class="no-results"
+                                                    [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+                                                    No results
+                                                </div> -->
+                                                <!-- <mat-paginator
+                            #paginator
+                            [length]="dataSource.length"
+                            [pageIndex]="0"
+                            [pageSize]="10"
+                            [pageSizeOptions]="[5, 10, 25, 100]"
+                          >
+                          </mat-paginator> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="tab-pane" id="tab2">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header l-bg-purple-dark">
+                                                    <div class="user-name">Pooja Patel</div>
+                                                    <div class="name-center">Mathematics</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig1.jpg" class="user-img" alt="">
+                                                <p>
+                                                    A-103, shyam gokul flats, Mahatma Road
+                                                    <br />Mumbai
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-cyan">
+                                                    <div class="user-name">Cara Stevens</div>
+                                                    <div class="name-center">Science</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig2.jpg" class="user-img" alt="">
+                                                <p>
+                                                    45, Krishna Tower, Near Bus Stop, Satellite,
+                                                    <br />Ahmedabad
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-dark">
+                                                    <div class="user-name">Megha Trivedi</div>
+                                                    <div class="name-center">Computer</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig3.jpg" class="user-img" alt="">
+                                                <p>
+                                                    456, Estern evenue, Courtage area,
+                                                    <br />New York
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header l-bg-orange">
+                                                    <div class="user-name">Sarah Smith</div>
+                                                    <div class="name-center">Engineering</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig4.jpg" class="user-img" alt="">
+                                                <p>
+                                                    A-103, shyam gokul flats, Mahatma Road
+                                                    <br />Mumbai
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-green">
+                                                    <div class="user-name">Smita Patil</div>
+                                                    <div class="name-center">Music</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig5.jpg" class="user-img" alt="">
+                                                <p>
+                                                    45, Krishna Tower, Near Bus Stop, Satellite,
+                                                    <br />Ahmedabad
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header l-bg-red">
+                                                    <div class="user-name">Airi Satou</div>
+                                                    <div class="name-center">Commerce</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig6.jpg" class="user-img" alt="">
+                                                <p>
+                                                    456, Estern evenue, Courtage area,
+                                                    <br />New York
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-indigo">
+                                                    <div class="user-name">Jayesh Patel</div>
+                                                    <div class="name-center">Mechanical</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig7.jpg" class="user-img" alt="">
+                                                <p>
+                                                    A-103, shyam gokul flats, Mahatma Road
+                                                    <br />Mumbai
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-brown">
+                                                    <div class="user-name">Angelica Ramos</div>
+                                                    <div class="name-center">Science</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig8.jpg" class="user-img" alt="">
+                                                <p>
+                                                    45, Krishna Tower, Near Bus Stop, Satellite,
+                                                    <br />Ahmedabad
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-amber">
+                                                    <div class="user-name">John Smith</div>
+                                                    <div class="name-center">Computer</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig9.jpg" class="user-img" alt="">
+                                                <p>
+                                                    456, Estern evenue, Courtage area,
+                                                    <br />New York
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header l-bg-purple-dark">
+                                                    <div class="user-name">Suraj Patel</div>
+                                                    <div class="name-center">Mathematics</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig10.jpg" class="user-img" alt="">
+                                                <p>
+                                                    A-103, shyam gokul flats, Mahatma Road
+                                                    <br />Mumbai
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-cyan">
+                                                    <div class="user-name">Ashton Cox</div>
+                                                    <div class="name-center">Science</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig2.jpg" class="user-img" alt="">
+                                                <p>
+                                                    45, Krishna Tower, Near Bus Stop, Satellite,
+                                                    <br />Ahmedabad
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card border-apply">
+                                        <div class="m-b-20">
+                                            <div class="contact-grid">
+                                                <div class="profile-header bg-dark">
+                                                    <div class="user-name">Jacob Ryan</div>
+                                                    <div class="name-center">Engineering</div>
+                                                </div>
+                                                <img src="assets/images/user/usrbig7.jpg" class="user-img" alt="">
+                                                <p>
+                                                    456, Estern evenue, Courtage area,
+                                                    <br />New York
+                                                </p>
+                                                <div>
+                                                    <span class="phone">
+                                                        <i class="material-icons">phone</i>264-625-2583</span>
+                                                </div>
+                                                <div class="profile-userbuttons">
+                                                    <button mat-flat-button color="primary">Read More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+    </div>
+</section>

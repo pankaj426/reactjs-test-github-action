@@ -1,0 +1,26 @@
+<section class="content ml-15 mt-0 edit-ucs-block">
+    <div class="custom-tabs pos-rel ml-0 mr-0">
+        <span class="login100-form-title pb-5">
+            <img src="assets/images/x-future.svg">
+          </span>
+        <div class="custom-tab-header">
+            <div class="ct-heading">{{overViewDetails.title}}</div>
+        </div>
+        <div class="page-sec overview-page tab-page-scroll">
+            <div class="white-box">
+                <ng-container>
+                    <div class="uc-short-desc">
+                        <ng-container *ngIf="overViewDetails.short_description">
+                            {{overViewDetails.short_description}}
+                        </ng-container>
+                        <ng-container *ngIf="overViewDetails.long_description">
+                            <ckeditor [editor]="Editor" [config]="ckEditorConfig"
+                                [(ngModel)]="overViewDetails.long_description" [disabled]="true">
+                            </ckeditor>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</section>

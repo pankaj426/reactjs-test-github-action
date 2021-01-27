@@ -1,0 +1,16 @@
+<div *ngIf="showLoadingIndicatior" class="page-loader-wrapper">
+    <app-page-loader></app-page-loader>
+</div>
+<ng-container>
+    <app-header></app-header>
+
+</ng-container>
+
+<ng-container *ngIf="classRefenrence.authenticated == true">
+    <ng-container *ngIf="localStorageService.userDetails.roles == userRoles.cgAdmin">
+        <app-sidebar></app-sidebar>
+    </ng-container>
+</ng-container>
+
+<app-right-sidebar></app-right-sidebar>
+<router-outlet></router-outlet>

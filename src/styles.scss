@@ -1,0 +1,99 @@
+@charset "UTF-8";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "~ngx-sharebuttons/themes/default/default-theme";
+@import "~highlight.js/styles/github.css";
+btn-loader2,
+.btn-loader2:before,
+.btn-loader2:after {
+  border-radius: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation: load7 1.8s infinite ease-in-out;
+  animation: load7 1.8s infinite ease-in-out;
+}
+.btn-loader2 {
+  color: #ffffff;
+  font-size: 8px;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -1.25em;
+  margin-top: -28px;
+  text-align: center;
+}
+.blue-loader {
+  color: #145caa;
+}
+.btn-loader2:before,
+.btn-loader2:after {
+  content: "";
+  position: absolute;
+  top: 0;
+}
+.btn-loader2:before {
+  left: -3.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.btn-loader2:after {
+  left: 3.5em;
+}
+@-webkit-keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+@keyframes load7 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 2.5em 0 -1.3em;
+  }
+  40% {
+    box-shadow: 0 2.5em 0 0;
+  }
+}
+.filter-option > .mat-pseudo-checkbox {
+  display: none !important;
+}
+
+  .info-test .info-content-box.dpss {
+    left: 0px;
+    position: relative;
+    top: 0px;
+    padding: 15px 0px;
+    color: currentColor;
+    right: 0px;
+    width: 100%;
+    font-size: 13px !important;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    -webkit-rtl-ordering: logical;
+    flex-direction: column;
+    cursor: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  font: inherit;
+    background: transparent;
+    max-width: 100%;
+    vertical-align: bottom;
+    opacity: initial;
+    visibility: initial;
+}

@@ -1,0 +1,88 @@
+<div class="limiter">
+  <div class="container-login100 form-background login-bg">
+    <div class="form-left">
+      <!-- <img src="assets/images/form-bg.svg" /> -->
+
+    </div>
+    <div class="form-right">
+      <div class="wrap-login100">
+        <form class="login100-form validate-form" [formGroup]="guestRegisterForm" (ngSubmit)="onSubmit()"
+          *ngIf="recivedData">
+          <div class="guest-login-title">
+            <span>Welcome Guest!</span> <br />
+            You are invited here as s Guest user by {{isInvitename}}
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Mail ID</mat-label>
+                <input matInput formControlName="email" name="email" required trim />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="fullname" name="fullname" required trim="blur" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Create Password</mat-label>
+                <span class="info-block1">
+                  <img src="assets/images/info.svg" width="16px" height="16px" />
+                  <div class="info-content-box">Atleast one capital letter, one numerical, and one special character are required to set a password and
+                    the password should be a minimum of 8 character length. Example - "Hello@987”</div>
+                </span>
+                <input required matInput type="password" formControlName="password" autocomplete="off" type="Password"
+                  name="password" trim="blur">
+                <mat-error *ngIf="submitted && guestRegisterForm.get('password').hasError('required')">
+                  Password is required
+                </mat-error>
+              </mat-form-field>
+              <mat-error *ngIf="submitted &&
+                !f.password.errors?.patterns &&
+                f.password.value != '' &&
+                f.password.touched &&
+                f.password.invalid
+              ">Password must contain more than 8 characters, 1 upper case letter, 1 numeric character
+                and 1 special character.</mat-error>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+              <mat-form-field class="example-full-width">
+                <mat-label>Confirm Password</mat-label>
+                <input required matInput type="password" formControlName="cpassword" autocomplete="off" type="Password"
+                  name="password" trim="blur">
+              </mat-form-field>
+              <div class="gengric-email-error" style="margin-top: -22px; font-size: 13px; color: red;" *ngIf="
+              submitted && guestRegisterForm.hasError('notSame') &&
+                f.cpassword.touched &&
+                f.password.touched
+              ">
+                Password and Confirm passwords do not match.
+              </div>
+            </div>
+
+          </div>
+          <div class="text-center" style="color: red; margin-bottom: 2px;">
+            {{ errorMessage }}
+          </div>
+          <div class="container-login100-form-btn">
+            <button mat-flat-button color="primary" class="login100-form-btn" type="submit">
+              Register
+            </button>
+          </div>
+          <div class="text-center m-t-30">
+            <div class="text2">
+              <a href="javascript:void(0);" class="custom-link">Terms and conditions and Privacy policy.</a></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

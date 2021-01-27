@@ -1,0 +1,56 @@
+<div class="custom-modal-with-blue">
+    <div class="blue-heading">Add Chat topic
+        <a (click)="closeDialog()" href="javascript:void(0);" class="ct-close close-modal">
+            <span class="close-icon"></span> Close
+        </a>
+    </div>
+    <div class="blue-modal-body">
+        <form [formGroup]="addTopicFrm" (ngSubmit)="onSubmitClick()"
+            class="login100-form validate-form placeholder-type-form">
+            <div class="rcf-group">
+                <div class="text-inside">
+                    <!--   <label class="field-label">Type</label> -->
+                    <mat-form-field class="example-full-width" apperiance="fill">
+                        <!-- <mat-label>Type</mat-label> -->
+                        <mat-select placeholder="Select Type" formControlName="type" required>
+                            <ng-container *ngFor="let type of types">
+                                <mat-option [value]="type.key">{{type.value}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+                        <mat-error *ngIf="addTopicFrm.controls.type.hasError('required')">
+                            Please select type
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="rcf-group">
+                <div class="text-inside">
+                    <!--  <label class="field-label">Topic</label> -->
+                    <mat-form-field class="example-full-width" apperiance="fill">
+                        <input matInput placeholder="Enter topic" formControlName="topic" maxlength="80" minlength="5"
+                            required trim="blur" />
+                        <mat-error *ngIf="addTopicFrm.controls.topic.hasError('required')">
+                            Please enter topic
+                        </mat-error>
+                        <mat-error *ngIf="addTopicFrm.controls.topic.hasError('minlength')">
+                            Topic should contains minimum 5 characters.
+                        </mat-error>
+                        <!--   <mat-error *ngIf="addTopicFrm.controls.topic.hasError('pattern')">
+                        Please enter valid topic
+                    </mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row mt-30">
+                <div class="col-sm-12 text-right">
+                    <button type="button" class="transparent-btn" (click)="closeDialog()">Cancel</button>
+                    <button class="mr-3 red-btn minw-170 pos-rel">Start chat
+                        <div *ngIf="loader">
+                            <div class="btn-loader2">Loading...</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

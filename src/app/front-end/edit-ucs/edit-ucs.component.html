@@ -1,0 +1,642 @@
+<section class="content ml-15 mt-0 edit-ucs-block">
+  <ng-container *ngIf="!authenticated">
+  </ng-container>
+  <ng-container *ngIf="authenticated && !initUcsLoader">
+    <div [ngClass]="isGuest ? 'custom-tabs pos-rel new-tabs-bg guest-user-tabs' : 'custom-tabs pos-rel  new-tabs-bg'">
+      <!-- use class for guest user "guest-user-tabs" -->
+      <div class="custom-tab-header" [ngClass]="isStartup == true && !isGuest ? 'detail-startup-border' : ''"
+        [ngClass]="isStartup == false && !isGuest ? 'detail-corporate-border' : ''">
+        <div class="ct-heading">
+          <div class="field-action">
+            <ng-container
+              *ngIf="!isTitleEditable && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser)">
+              <span class="red-edit" (click)="makeTitleEditable()"></span>
+            </ng-container>
+            <ng-container
+              *ngIf="isTitleEditable && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser)">
+              <a href="javascript:void(0)" (click)="saveUcsNew('title')" class="check"><i
+                  class="material-icons">check</i></a>
+              <a href="javascript:void(0)" (click)="makeTitleEditable()" class="close"><i
+                  class="material-icons">close</i></a>
+            </ng-container>
+          </div>
+          <form>
+            <input required type="text" name="editTitle" [(ngModel)]="editTitle" id="titleEdit" class="ct-heading-input showthreedot"
+              value="{{ucsTitle}}" [disabled]="!isTitleEditable" maxlength="{{titleMaxLength}}"
+              minlength="{{ucstitleMinLength}}">
+          </form>
+          <!-- {{ucsTitle}}  -->
+        </div>
+        <div class="ml-auto display-flex align-center">
+          <ng-container *ngIf="isUcsPromoted == false">
+            <div class="custom-checkbox promot-checkbox">
+
+              <ng-container *ngIf="publishedStatus == 'published' && ucsType == 'usecase' && isSampleEditable">
+                <button
+                  *ngIf="ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser"
+                  class="red-transparent-btn" [(ngModel)]="isUcsPromoted" (click)="openPromotePopUp(isUcsPromoted)">
+                  <!--  Promote Me --> Opt-in Promotion
+                </button>
+              </ng-container>
+
+            </div>
+          </ng-container>
+          <ul class="nav navbar-nav navbar-right usecase-profile-menu">
+            <li class="dropdown user_profile">
+              <a href="#" onclick="return false;" data-toggle="dropdown" role="button">
+                <div class="display-flex align-center">
+                  <div class="header-user-name">
+                    <span style="font-size: small;font-family: inherit;"> Welcome </span><span>{{ fullname }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div
+                    [ngClass]="isGuest ? 'rounded-circle guest-title-name-short' : 'rounded-circle title-name-short'">
+                    <span id="f2splitname">{{fullname.split(' ')[0].substr(0,1) }}</span><span>{{fullname.split(' ')[1]!=undefined?fullname.split(' ')[1].substr(0,1):"" }}</span>
+                  </div>
+                </div>
+              </a>
+              <!-- <ul  class="dropdown-menu pullDown"> -->
+              <ul class="dropdown-menu">
+                <li class="body">
+                  <ul class="user_dw_menu">
+                    <li (click)="redirectToOrgProfile()" style="cursor: pointer;"
+                      *ngIf="localStorageService.userDetails.roles == userRoles.startupGuestUser || localStorageService.userDetails.roles != userRoles.startupGuestUser && localStorageService.userDetails.roles != userRoles.corporateGuestUser">
+                      <a>
+                        <span class="drop-icon company-icon"></span>
+                        <ng-container
+                          *ngIf="localStorageService.userDetails.roles == userRoles.startupGuestUser || localStorageService.userDetails.roles == userRoles.startupAdmin || localStorageService.userDetails.roles == userRoles.startupUser">
+                          Startup Profile
+                        </ng-container>
+                        <ng-container
+                          *ngIf="localStorageService.userDetails.roles == userRoles.corporateGuestUser ||localStorageService.userDetails.roles == userRoles.corporateAdmin || localStorageService.userDetails.roles == userRoles.corporateUser">
+                          Company Profile
+                        </ng-container>
+                      </a>
+                    </li>
+                    <li (click)="openProfilePopup('userprofile')" style="cursor: pointer;">
+                      <a><span class="drop-icon user-icon"></span> User Profile </a>
+                    </li>
+                    <li (click)="openProfilePopup('changePassword')" style="cursor: pointer;">
+                      <a><span class="drop-icon change-pwd-icon"></span> Change Password </a>
+                    </li>
+                    <li (click)="openProfilePopup('support')" style="cursor: pointer;">
+                      <a><span class="drop-icon support-icon"></span> Support & Feedback </a>
+                    </li>
+                    <li (click)="logout()" style="cursor: pointer;">
+                      <a><span class="drop-icon logout-icon"></span> Logout </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <a href="javascript:void(0);" (click)="redirectUser()" class="ct-close pos-top-close"><span
+          class="close-icon"></span>
+        Close</a>
+      <ng-contianer *ngIf="overViewDetails.sharedUsers != null">
+        <div
+          (click)="openUserListPopup(overViewDetails._id,overViewDetails.created_by,'invite',ucs_user_role, overViewDetails.fullname)"
+          class="participant-block header-participant "
+          *ngIf="overViewDetails.sharedUsers.length > 0 && overViewDetails.sharedUsers.length <= 4"
+          style="cursor: pointer;">
+          <div class="participant-label">Participants</div>
+          <div class="pos-rel w-custom">
+            <ng-container *ngFor="let users of overViewDetails.sharedUsers; let i = index;">
+              <sapn class="pb-user pb-user{{i+1}}" title="{{users.fullname}}">{{users.fullname.substr(0,1)}}
+                <ng-container *ngIf="users.fullname.split(' ')[1] !=undefined">
+                  {{users.fullname.split(" ")[1].substr(0,1)}}</ng-container>
+              </sapn>
+            </ng-container>
+          </div>
+        </div>
+        <div
+          (click)="openUserListPopup(overViewDetails._id,overViewDetails.created_by,'invite',ucs_user_role, overViewDetails.fullname)"
+          class="participant-block header-participant " *ngIf="overViewDetails.sharedUsers.length >= 5"
+          style="cursor: pointer;">
+          <div class="participant-label">Participants</div>
+          <div class="pos-rel w-custom">
+            <ng-container>
+              <sapn class="pb-user pb-user1" title="{{ overViewDetails.sharedUsers[0].fullname}}">
+                {{ overViewDetails.sharedUsers[0].fullname.substr(0,1)}} <ng-container
+                  *ngIf="overViewDetails.sharedUsers[0].fullname.split(' ')[1] != undfined">
+                  {{overViewDetails.sharedUsers[0].fullname.split(" ")[1].substr(0,1)}}</ng-container>
+              </sapn>
+              <sapn class="pb-user pb-user2" title="{{ overViewDetails.sharedUsers[1].fullname}}">
+                {{ overViewDetails.sharedUsers[1].fullname.substr(0,1) }}<ng-container
+                  *ngIf="overViewDetails.sharedUsers[1].fullname.split(' ')[1] != undfined">
+                  {{overViewDetails.sharedUsers[1].fullname.split(" ")[1].substr(0,1)}}</ng-container>
+              </sapn>
+              <sapn class="pb-user pb-user3" title="{{ overViewDetails.sharedUsers[2].fullname}}">
+                {{ overViewDetails.sharedUsers[2].fullname.substr(0,1) }}<ng-container
+                  *ngIf="overViewDetails.sharedUsers[2].fullname.split(' ')[1] != undfined">
+                  {{overViewDetails.sharedUsers[2].fullname.split(" ")[1].substr(0,1)}}</ng-container>
+              </sapn>
+              <sapn class="pb-user pb-user4" title="{{ overViewDetails.sharedUsers[3].fullname}}">
+                {{ overViewDetails.sharedUsers[3].fullname.substr(0,1)}} <ng-container
+                  *ngIf="overViewDetails.sharedUsers[3].fullname.split(' ')[1] != undfined">
+                  {{overViewDetails.sharedUsers[3].fullname.split(" ")[1].substr(0,1)}}</ng-container>
+              </sapn>
+              <sapn class="pb-user pb-user5" title="{{ overViewDetails.sharedUsers[4].fullname}}">
+                {{ overViewDetails.sharedUsers[4].fullname.substr(0,1)}} <ng-container
+                  *ngIf="overViewDetails.sharedUsers[4].fullname.split(' ')[1] != undfined">
+                  {{overViewDetails.sharedUsers[4].fullname.split(" ")[1].substr(0,1)}}</ng-container>
+              </sapn>
+            </ng-container>
+          </div>
+          <span class="pb-total-value"
+            *ngIf="overViewDetails.sharedUsers.length > 5">+{{( overViewDetails.sharedUsers.length) - 5}}</span>
+        </div>
+      </ng-contianer>
+
+      <ng-container *ngIf="publishedStatus == 'published'">
+        <mat-tab-group (selectedTabChange)="yourFn($event)" [selectedIndex]="selectedTab" #tabGroup>
+          <mat-tab label="{{ tabTitle }}">
+            <ng-container *ngIf="viewUcsDetails == false">
+              <div class="page-sec use-case-page tab-page-scroll"
+                [ngClass]="ucsLoader == true ?'min-height-page pos-rel':''">
+                <div class="row edit-ucs-cuc-tab">
+                  <!-- <a href="#" class="show-more">show more </a> -->
+                  <div class="preloader-box" *ngIf="ucsLoader">
+                    <div class="preloader pl-size-l">
+                      <div class="spinner-layer pl-orange">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="uscList.length > 0 && ucsLoader == false">
+                    <div class="col-md-4" *ngFor="
+                            let usecaseSolu of uscList | filter: searchText; let i = index">
+                      <div class="card custom-card">
+                        <div class="body" (click)="redirectoUcsDetail(usecaseSolu._id)" style="cursor: pointer;">
+                          <div class="dash-heading">
+                            <!-- [ngClass]="[usecaseSolu.publishClass]" -->
+                            <h2>
+                              {{ usecaseSolu.title }}
+                            </h2>
+                          </div>
+                          <ng-container *ngIf="usecaseSolu.short_description != ''">
+                            <div class="dashboard-content">{{ usecaseSolu.short_description }}</div>
+                          </ng-container>
+                          <ng-container *ngIf="usecaseSolu.short_description == '' && usecaseSolu.additional_fields">
+                            <div class="dashboard-content">{{ usecaseSolu.additional_fields.summary }}</div>
+                          </ng-container>
+                          <ng-container *ngIf="usecaseSolu.short_description == '' && !usecaseSolu.additional_fields">
+                            <div class="dashboard-content">Currently there is no description/summary</div>
+                          </ng-container>
+                        </div>
+                        <div class="footer">
+                          <div class="display-flex align-center">
+                            <div class="by-user-name">
+                              <div>By</div>
+                              <div class="text-left">
+                                <span *ngIf="usecaseSolu.type=='solution'"
+                                  (click)="openModal(template,usecaseSolu.org_id)">{{ usecaseSolu.org_name }} </span>
+                                <span *ngIf="usecaseSolu.type=='usecase'">{{ usecaseSolu.org_name }} </span>
+                                <div class="publish-time">{{
+                                      dateFormatService.momentAgoDateFormat(
+                                        usecaseSolu.created
+                                      )
+                                    }}</div>
+                              </div>
+                            </div>
+                            <!-- <div class="display-flex align-center" *ngIf="usecaseSolu.org_name">
+                                      <div class="card-user-name">
+                                        {{ usecaseSolu.orgShortName }}
+                                      </div>
+                                      <div>{{ usecaseSolu.org_name }}</div>
+                                    </div> -->
+                            <div class="ml-auto">
+                              <div class="add-pipeline-btn-block">
+                                <ng-container
+                                  *ngIf=" (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser) && !usecaseSolu.is_pipeline">
+                                  <button class="red-transparent-btn" [disabled]="!isSampleEditable"
+                                    (click)="addToPipeline(i, usecaseSolu._id)">
+                                    Add to pipeline
+                                  </button>
+                                </ng-container>
+                                <ng-container
+                                  *ngIf="(ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser) && usecaseSolu.is_pipeline">
+                                  <button class="red-transparent-btn" [disabled]="true">
+                                    Added to Pipeline
+                                  </button>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="text-center m-t-30 w-100" *ngIf="uscList.length == 0 && ucsLoader == false">
+                    <div class="no-message-box text-center">
+                      <div class="no-msg-img">
+                        <img src="assets/images/no-message-img.png" />
+                      </div>
+                      <div class="no-msg-heading">No {{tabTitle}} found</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="viewUcsDetails == true">
+              <div class=" pos-rel ml-0 mr-0">
+                <div class="custom-loader-wrap" *ngIf="ucsDetailsLoader == true">
+                  <div class="custom-loader">Loading...</div>
+                </div>
+                <!-- <div class="custom-tab-header">
+                            <div class="ct-heading">High Performance Computing & Security with DevOps</div>
+                            <div class="ml-auto">
+                              <a href="javascript:void(0);" class="ct-close"><span class="close-icon"></span>
+                                Close</a>
+                            </div>
+                          </div>
+                          <div class="inbox_search">
+                            <span class="search-icon"></span>
+                            <input type="text" name="" class="form-control" placeholder="Search Topic or Name…">
+                          </div>  -->
+                <div class="page-sec overview-page tab-page-scroll">
+                  <div class="display-flex align-center outside-header">
+                    <div class="back-block">
+                      <a href="javascript:void(0);" class="publisBtn" (click)="backToUscList()">
+                        <span class="back-icon"></span> Back to {{tabTitle}}
+                      </a>
+                    </div>
+                  </div>
+                  <div class="white-box">
+                    <div class="display-flex align-center resource-header">
+                      <div class="resource-title">{{uscDtl.title}}</div>
+                      <div class="ml-auto">
+                        <a href="javascript:void(0);" (click)="openUscDetails('detail')" class="red-transparent-btn uc-tab-btn"
+                          [ngClass]="(showDetailsResource == false) ? 'active':''">Details</a>
+                        <a href="javascript:void(0);" (click)="openUscDetails('resource')" class="red-transparent-btn uc-tab-btn"
+                          [ngClass]="(showDetailsResource == true) ? 'active':''">Resources</a>
+                      </div>
+                    </div>
+                    <ng-container *ngIf="showDetailsResource == false">
+                      <ng-container *ngIf="ucsDetailsLoader == false">
+                          <app-usc-details-sidebar [showDetailsResource]="showDetailsResource" [details]="uscDtl" [tech]="techlogies">
+                          </app-usc-details-sidebar>
+
+                      </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="showDetailsResource == true">
+                      <div class="resourse-table-label">Resources</div>
+                      <div class="resource-table-scroll">
+                        <div class="resource-detail" [ngClass]="{ 'min-height-page pos-rel': dtlResLoader == true }">
+                          <div class="">
+                            <div class="preloader-box" *ngIf="dtlResLoader">
+                              <div class="preloader pl-size-l">
+                                <div class="spinner-layer pl-orange">
+                                  <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- dtlReslist replace resourceList -->
+                            <ng-container *ngIf="dtlResLoader == false && dtlReslist.length > 0">
+
+                              <table class="resource-table use-case-table" cellpadding="0" cellspacing="0" border="0"
+                                width="100%">
+                                <ng-container *ngFor="let res of dtlReslist; let i = index">
+                                  <tr>
+                                    <td width="65%">
+                                      <i class="fas fa-file"></i>&nbsp;
+                                      <a href="javascript:void(0);" (click)="getDownloadPath(res.file)"
+                                        title="Download {{res.file}}"><span
+                                          class="file-name-without-extension resourse-file">{{res.file}}</span></a>
+                                    <td width="5%">
+                                      <button color="accent" title="Download" (click)="getDownloadPath(res.file)"
+                                        class="transparent-btn-bg">
+                                        <span class="download-icon"></span>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                              </table>
+                            </ng-container>
+                            <ng-container *ngIf="dtlResLoader == false && dtlReslist.length == 0">
+                              <div class="text-center">
+                                <div class="no-msg-img">
+                                  <img src="assets/images/resource-no-data-found.png" />
+                                </div>
+                                <div class="no-msg-heading">No resources found</div>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+
+
+
+                  <div class="row mb-20 mt-40"
+                    *ngIf="ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser">
+                    <div class="col-sm-12 text-right">
+                      <ng-container
+                        *ngIf="uscDtl.is_pipeline != true  && dtlResLoader == false 
+                            && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser)">
+                        <button color="warn" class="publisBtn red-btn minw-170 pos-rel"
+                          [disabled]="DtlToPipelineLoader || !isSampleEditable" (click)="addDtlToPipeline(uscDtl._id)">
+                          Add to pipeline
+                          <div class="css-loader-btn" *ngIf="DtlToPipelineLoader">
+                            <div class="sbl-circ"></div>
+                          </div>
+                        </button>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="uscDtl.is_pipeline == true  && dtlResLoader == false 
+                          && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser)">
+                        <button color="warn" class="publisBtn red-btn minw-170" [disabled]="true">
+                          Added to pipeline
+                        </button>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </ng-container>
+          </mat-tab>
+          <mat-tab label="My Pipeline">
+            <app-pipeline #pipelineComponent *ngIf="selectedTab == 1"
+              (availabeDiscTypeUpdate)="availabeDiscTypeUpdate($event)" [uscType]="uscType"
+              [isEditable]="isSampleEditable" [ucsParticipants]="overViewDetails.sharedUsers">
+            </app-pipeline>
+          </mat-tab>
+          <mat-tab label="Evaluate">
+              <app-evaluate #evaluateComponent [ucsParticipants]="overViewDetails.sharedUsers" *ngIf="selectedTab == 2"
+                [isSampleEditable]="isSampleEditable"></app-evaluate>
+          </mat-tab>
+          <mat-tab label="Team Discussion">
+            <app-discussion *ngIf="selectedTab == 3" [uscType]="uscType" [isEditable]="isSampleEditable"
+              [ucsParticipants]="overViewDetails.sharedUsers"></app-discussion>
+          </mat-tab>
+      
+      
+          <!-- <mat-tab label="Resources">
+            <div class="page-sec resource-page tab-page-scroll"
+              [ngClass]="{ 'min-height-page pos-rel': resourseLoader == true }">
+              <div class="preloader-box" *ngIf="resourseLoader">
+                <div class="preloader pl-size-l">
+                  <div class="spinner-layer pl-orange">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="resourseLoader == false && resourceList.length == 0">
+                <div class="no-message-box text-center">
+                  <div class="resource-title">Doctype supported: PDF, PPTX, DOCX,PNG, Mp4, JPG, JPEG, CSV, XLS
+                  </div>
+                  <div class="no-msg-img">
+                    <img src="assets/images/resource-no-data-found.png" />
+                  </div>
+                  <div class="no-msg-heading">No Files uploaded yet!</div>
+                  <div class="no-msg-content maxw-50"></div>
+                  <div class="text-center">
+                    <div class="mt-50 no-msg-btn-block">
+                      <div class="custom-upload text-center">
+                        <form *ngIf="isSampleEditable" enctype="multipart/form-data" name="frm">
+                          <input type="file" class="file-hidden-input" (change)="handleFileInput($event.target.files)"
+                            required />
+                          <span class="red-btn">Upload Resource</span>
+                        </form>
+                        <div class="uploaded-file-component">
+                          <ng-container *ngIf="uploadResLoader == true">
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="resourseLoader == false && resourceList.length > 0">
+                <div class="white-box resource-box">
+                  <div class="display-flex align-center resource-header">
+                    <div class="resource-title">Doctype supported: PDF, PPTX, DOCX,PNG, Mp4, JPG, JPEG, CSV, XLS
+                    </div>
+                    <div class="ml-auto">
+                      <span class="add-recourse">
+                        <div class="ucs-file-picker-block">
+                          <div *ngIf="isSampleEditable" class="file-picker-component">
+                            <form enctype="multipart/form-data" name="frm">
+                              <input type="file" class="file-hidden-input" [readonly]="!isSampleEditable"
+                                (change)="handleFileInput($event.target.files)" required />
+                            </form>
+                            <div class="btn waves-effect add-file-label">
+                              Upload resource
+                            </div>
+                          </div>
+                          <div class="uploaded-file-component">
+                            <ng-container *ngIf="uploadResLoader == true">
+                              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="resourse-table-label">Files</div>
+                  <div class="resource-table-scroll">
+                    <table class="resource-table" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <ng-container *ngFor="let res of resourceList; let i = index">
+                        <tr>
+                          <td width="65%">
+                            <a href="javascript:void(0);" (click)="getDownloadPath(res.file)"
+                              title="Download {{res.file}}"><span
+                                class="file-name-without-extension resourse-file">{{res.file}}</span></a>
+                          </td>
+                          <td width="20%">
+                            <div class="custom-slide-toggle">
+                              <span class="slide-label active" *ngIf="res.status == 'public'">Public</span>
+
+                              <mat-slide-toggle class="example-margin" (change)="updateRes($event,res._id,i)"
+                                [color]=" color" [checked]="showPubPraivateRes(res.status)"
+                                [disabled]="!isSampleEditable">
+                              </mat-slide-toggle>
+
+                              <span class="slide-label" *ngIf="res.status == 'private'">Private</span>
+                            </div>
+                          </td>
+                          <td width="5%">
+                            <button [disabled]="!isSampleEditable" mat-icon-button color="accent"
+                              (click)="removeRes(res._id,i)" title="Delete {{res.file}}" class="">
+                              <span class="del-icon"></span>
+                            </button>
+                          </td>
+                          <td width="5%">
+                            <button mat-icon-button color="accent" (click)="getDownloadPath(res.file)"
+                              title="Download {{res.file}}" class="">
+                              <span class="download-icon"></span>
+                            </button>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>
+          </mat-tab> -->
+
+          <mat-tab label="Resources">
+            <app-resources [uscType]="uscType" [isEditable]="isSampleEditable"
+              [ucsParticipants]="overViewDetails.sharedUsers"></app-resources>
+          </mat-tab>
+          
+          <mat-tab label="Overview">
+            <div class="page-sec overview-page tab-page-scroll"
+              [ngClass]="overViewLoader == true ?'min-height-page pos-rel':''">
+              <div class="row">
+                <div class="col-md-12 pos-rel" [ngClass]="overViewLoader == true ?'min-height-page pos-rel':''">
+                  <div class="preloader-box" *ngIf="overViewLoader == true">
+                    <div class="preloader pl-size-l">
+                      <div class="spinner-layer pl-orange">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="overViewLoader == false">
+                    <ng-container *ngIf="tagsLoader == true">
+                      <div class="text-center m-t-30 industry-loader">
+                        <div class="preloader pl-size-xs">
+                          <div class="spinner-layer pl-purple">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                              <div class="circle"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- {{ucsForm.value | json}} -->
+
+                    <ng-container *ngIf="(overViewDetails.type == 'solution' || overViewDetails.type == 'usecase') ">
+                      <app-overview (publicStatusUpdate)="publicStatusUpdate($event)" [isEditable]="isSampleEditable"
+                        [ucsLength]="ucsLength" [isUcsPromoted]="isUcsPromoted"></app-overview>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </ng-container>
+      <ng-container *ngIf="publishedStatus == 'unpublished'">
+        <mat-tab-group (selectedTabChange)="yourFn($event)" [selectedIndex]="selectedTab" #tabGroup>
+          <mat-tab label="Overview">
+            <div class="page-sec overview-page tab-page-scroll"
+              [ngClass]="overViewLoader == true ?'min-height-page pos-rel':''">
+              <div class="row">
+                <div class="col-md-12 pos-rel" [ngClass]="overViewLoader == true ?'min-height-page pos-rel':''">
+                  <div class="preloader-box" *ngIf="overViewLoader == true">
+                    <div class="preloader pl-size-l">
+                      <div class="spinner-layer pl-orange">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="overViewLoader == false">
+                    <ng-container *ngIf="tagsLoader == true">
+                      <div class="text-center m-t-30 industry-loader">
+                        <div class="preloader pl-size-xs">
+                          <div class="spinner-layer pl-purple">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                              <div class="circle"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <!-- {{ucsForm.value | json}} -->
+
+                    <ng-container *ngIf="overViewDetails.type == 'solution' || overViewDetails.type == 'usecase'">
+                      <app-overview (publicStatusUpdate)="publicStatusUpdate($event)" [isEditable]="isSampleEditable"
+                        [ucsLength]="ucsLength"></app-overview>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Team Discussion" (click)="viewDiscussion()">
+            <app-discussion *ngIf="selectedTab == 1" [uscType]="uscType" [isEditable]="isSampleEditable"
+              [ucsParticipants]="overViewDetails.sharedUsers"></app-discussion>
+          </mat-tab>
+        </mat-tab-group>
+      </ng-container>
+    </div>
+  </ng-container>
+</section>
+
+<ng-template #template>
+  <div class="">
+    <!--custom-modal-wrap-->
+    <!-- <a href="#" (click)="modalRef.hide()" class="close">
+      <img src="assets/images/cancel.svg " width="14px" height="14px">
+    </a> -->
+    <div class=" pos-rel">
+      <!--overview-modal-block-->
+      <div class="overview-user-circle">
+        <!-- <img src="assets/images/user-logo.png" /> -->
+        <img src='{{ baseUrl + this.profilelogo}}' />
+      </div>
+
+      <div class="custom-profile-box">
+        <div class="cp-box-left">
+          <div class="rcf-group mb-25">
+            <label class="field-label">Company website</label>
+            <div class="cp-value">{{this.getuscprofile.website}}</div>
+          </div>
+          <ng-container *ngFor="let link of linkedin">
+            <div class="rcf-group mb-25">
+              <label class="field-label">Linkedin profile of founders</label>
+              <div class="cp-value mb-5">{{link}}</div>
+              <!-- <div class="cp-value">www.linkedin.com/in/saurabhmittal/</div> -->
+            </div>
+          </ng-container>
+          <div class="rcf-group">
+            <label class="field-label">Describe the problem your solution is solving</label>
+            <div class="cp-value">{{this.problemyour}}.</div>
+          </div>
+        </div>
+        <div class="cp-box-right">
+          <div class="rcf-group mb-30">
+            <label class="field-label">Annual recurring revenue</label>
+            <div class="cp-value">{{this.annualRecurringRevenue}}</div>
+          </div>
+          <div class="rcf-group mb-30">
+            <label class="field-label">ROI of potential customer</label>
+            <div class="cp-value">{{this.currentPaying}}</div>
+          </div>
+          <div class="rcf-group mb-30">
+            <label class="field-label">Name some of your customers (Fortune 500 or above)</label>
+            <div class="cp-value">{{this.marqueeCustomers}}</div>
+          </div>
+          <div class="rcf-group">
+            <label class="field-label">Total number of customer</label>
+            <div class="cp-value">{{this.totalCustomers}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

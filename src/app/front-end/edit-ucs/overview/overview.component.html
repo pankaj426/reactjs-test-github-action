@@ -1,0 +1,805 @@
+<form [formGroup]="ucsForm" class="register-form register-custom-form overview-custom-from n-custom-from"
+  *ngIf="overViewLoader == false">
+  <div>
+    <div class="row mb-35" *ngIf="overViewDetails.type != 'usecase'">
+      <div class="col-md-7">
+        <div class="white-box">
+          <div class="rcf-group pt-0 mb-0">
+            <mat-form-field class="example-full-width bb-none">
+              <div class="display-flex align-center overview-flex mb-7">
+                <div class="bf-label fw-400">Solution summary (Describe the product or technology you are building) <span class="red">*</span></div>
+                <!-- <div class="ml-auto word-count">Max 500 Characters</div> -->
+              </div>
+              <div class="input-field">
+                <textarea matInput (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+                formControlName="summary" required (click)="makeEabelDisableForm('summary','enable')"
+                class="n-form-control" maxlength="500" appTextCount trim="blur"></textarea>
+              </div>
+              <mat-error *ngIf="publishFormSubmitted && ucsForm.get('summary').hasError('required')">
+                * Solution summary is required.
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('summary').hasError('maxlength') && !ucsForm.get('summary')">
+                * Maximum 500 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('summary').hasError('minlength') && !ucsForm.get('summary')">
+                * Minimum 3 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('summary').hasError('required') && !ucsForm.get('summary')">
+                * Please enter valid details
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="rcf-group pt-0 mb-0">
+            <mat-form-field class="example-full-width bb-none">
+              <div class="display-flex align-center overview-flex mb-7">
+                <div class="bf-label fw-400">User pain points this solution is addressing <span class="red">*</span></div>
+                <!-- <div class="ml-auto word-count">Max 500 Characters</div> -->
+              </div>
+              <div class="input-field">
+                <textarea (focusout)="checkAtleastOnEditable()" matInput [readonly]="!isEditable"
+                formControlName="enterprisePainPoint" (click)="makeEabelDisableForm('enterprisePainPoint','enable')"
+                class="n-form-control" maxlength="500" appTextCount trim="blur"></textarea>
+              </div>
+              <mat-error *ngIf="publishFormSubmitted && ucsForm.get('enterprisePainPoint').hasError('required')">
+                Enterprise pain point is required
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('enterprisePainPoint').hasError('maxlength') && !ucsForm.get('enterprisePainPoint')">
+                * Maximum 500 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('enterprisePainPoint').hasError('minlength') && !ucsForm.get('enterprisePainPoint')">
+                * Minimum 3 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('enterprisePainPoint').hasError('required') && !ucsForm.get('enterprisePainPoint')">
+                * Please enter valid details
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="rcf-group pt-0 mb-0">
+            <mat-form-field class="example-full-width bb-none">
+              <div class="display-flex align-center overview-flex mb-7">
+                <div class="bf-label fw-400">Name one or more of your competitors<span
+                    class="red">*</span></div>
+                <!-- <div class="ml-auto word-count">Max 500 Characters</div> -->
+              </div>
+              <div class="input-field">
+                <textarea (focusout)="checkAtleastOnEditable()" matInput [readonly]="!isEditable"
+                (click)="makeEabelDisableForm('competitors','enable')" formControlName="competitors"
+                class="n-form-control" maxlength="500" appTextCount trim="blur"></textarea>
+              </div>
+              <mat-error *ngIf="publishFormSubmitted && ucsForm.get('competitors').hasError('required')">
+                Competitors and USP is required
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('competitors').hasError('maxlength') && !ucsForm.get('competitors')">
+                * Maximum 500 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('competitors').hasError('minlength') && !ucsForm.get('competitors')">
+                * Minimum 3 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('competitors').hasError('required') && !ucsForm.get('competitors')">
+                * Please enter valid details
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="rcf-group pt-0 mb-0">
+            <mat-form-field class="example-full-width bb-none">
+              <div class="display-flex align-center overview-flex mb-7">
+                <div class="bf-label fw-400">Describe the maturity stage of solution <span class="red">*</span></div>
+                <!-- <div class="ml-auto word-count">Max 500 Characters</div> -->
+              </div>
+              <div class="input-field">
+                <textarea (focusout)="checkAtleastOnEditable()" matInput [readonly]="!isEditable"
+                (click)="makeEabelDisableForm('maturityStage','enable')" formControlName="maturityStage"
+                class="n-form-control" maxlength="500" appTextCount trim="blur"></textarea>
+              </div>
+              <mat-error *ngIf="publishFormSubmitted && ucsForm.get('maturityStage').hasError('required')">
+                Maturity stage is required
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('maturityStage').hasError('maxlength') && !ucsForm.get('maturityStage')">
+                * Maximum 500 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('maturityStage').hasError('minlength') && !ucsForm.get('maturityStage')">
+                * Minimum 3 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('maturityStage') && !ucsForm.get('maturityStage').hasError('required')">
+                * Please enter valid details
+              </mat-error>
+            </mat-form-field>
+          </div>
+<!--           <div class="rcf-group pt-0 mb-0">
+            <mat-form-field class="example-full-width bb-none">
+              <div class="display-flex align-center overview-flex mb-7">
+                <div class="bf-label fw-400">What are the salient points of the solution <span class="red">*</span></div>
+                 <div class="ml-auto word-count">Max 500 Characters</div>
+              </div>
+              <div class="input-field" >
+                <textarea (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable" matInput
+                (click)="makeEabelDisableForm('silentPoints','enable')" formControlName="silentPoints"
+                class="n-form-control" maxlength="500" appTextCount></textarea>
+              </div>
+              <mat-error *ngIf="publishFormSubmitted && ucsForm.get('silentPoints').hasError('required')">
+                Silents points is required
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('silentPoints').hasError('maxlength') && !ucsForm.get('silentPoints')">
+                * Maximum 500 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('silentPoints').hasError('minlength') && !ucsForm.get('silentPoints')">
+                * Minimum 3 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('silentPoints') && !ucsForm.get('silentPoints').hasError('required')">
+                * Please enter valid details
+              </mat-error>
+            </mat-form-field>
+          </div> -->
+          <div class="rcf-group pt-0 mb-0">
+            <mat-form-field class="example-full-width bb-none">
+              <div class="display-flex align-center overview-flex mb-7">
+                <div class="bf-label fw-400">Value added to the business using your solution (i.e 90% reduction in human error) <span class="red">*</span></div>
+                <!-- <div class="ml-auto word-count">Max 500 Characters</div> -->
+              </div>
+              <div class="input-field" >
+                <textarea (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable" matInput
+                (click)="makeEabelDisableForm('contributeToROI','enable')" formControlName="contributeToROI"
+                class="n-form-control" maxlength="500" appTextCount trim="blur"></textarea>
+              </div>
+              <mat-error *ngIf="publishFormSubmitted && ucsForm.get('contributeToROI').hasError('required')">
+                Contribution to ROI is required
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('contributeToROI').hasError('maxlength') && !ucsForm.get('contributeToROI')">
+                * Maximum 500 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('contributeToROI').hasError('minlength') && !ucsForm.get('contributeToROI')">
+                * Minimum 3 characters allowed
+              </mat-error>
+              <mat-error
+                *ngIf="publishFormSubmitted && ucsForm.get('contributeToROI') && !ucsForm.get('contributeToROI').hasError('required')">
+                * Please enter valid details
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="rcf-group pt-0">
+            <div class="display-flex align-center overview-flex mb-10">
+              <div class="bf-label fw-400">Customer testimonials for the solution <span class="red">*</span></div>
+              <div class="ml-auto word-count"></div>
+            </div>
+            <div class="display-flex ct-flex">
+              <ng-container>
+                <div class="ct-box">
+                  <mat-form-field class="example-full-width bb-none">
+                    <div class="input-field">
+                      <textarea (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable" matInput
+                      formControlName="customerTestimonials"
+                      (click)="makeEabelDisableForm('customerTestimonials','enable')" class="n-form-control" maxlength="250" appTextCount trim="blur"></textarea>
+                    </div>
+                    <mat-error *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials').hasError('required')">
+                      Customers testimonial is required
+                    </mat-error>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials').hasError('maxlength') && !ucsForm.get('customerTestimonials')">
+                      * Maximum 250 characters allowed
+                    </mat-error>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials').hasError('minlength') && !ucsForm.get('customerTestimonials')">
+                      * Minimum 3 characters allowed
+                    </mat-error>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials') && !ucsForm.get('customerTestimonials').hasError('required')">
+                      * Please enter valid details
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+
+                <div class="ct-box" *ngIf="testimonial1 == true">
+                  <ng-container *ngIf="subtesti==true">
+                    <a href="javascript:void(0);" style="z-index: 999;" (click)="removeTestimonial(1)" class="remove-link">
+                      <img src="assets/images/red-minus.svg" width="26px" height="26px" />
+                    </a>
+                  </ng-container>
+                  <mat-form-field class="example-full-width bb-none">
+                    <div class="input-field">
+                      <textarea (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable" matInput
+                      formControlName="customerTestimonials1"
+                      (click)="makeEabelDisableForm('customerTestimonials1','enable')"
+                      class="n-form-control" maxlength="250" appTextCount trim="blur"></textarea>
+                    </div>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials1').hasError('maxlength') && !ucsForm.get('customerTestimonials1')">
+                      * Maximum 250 characters allowed
+                    </mat-error>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials1').hasError('minlength') && !ucsForm.get('customerTestimonials1')">
+                      * Minimum 3 characters allowed
+                    </mat-error>
+                    <mat-error *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials1')">
+                      * Please enter valid details
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="ct-box" *ngIf="testimonial2 == true">
+                  <ng-container *ngIf="subcuttesti1 == true">
+                    <a href="javascript:void(0);" style="z-index: 999;" (click)="removeTestimonial(2)" class="remove-link">
+                      <img src="assets/images/red-minus.svg" width="26px" height="26px" />
+                    </a>
+                  </ng-container>
+                  <mat-form-field class="example-full-width bb-none">
+                    <div class="input-field">
+                      <textarea matInput (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+                      formControlName="customerTestimonials2"
+                      (click)="makeEabelDisableForm('customerTestimonials2','enable')"
+                      class="n-form-control" maxlength="250" appTextCount trim="blur"></textarea>
+                    </div>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials2').hasError('maxlength') && !ucsForm.get('customerTestimonials2')">
+                      * Maximum 250 characters allowed
+                    </mat-error>
+                    <mat-error
+                      *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials2').hasError('minlength') && !ucsForm.get('customerTestimonials2')">
+                      * Minimum 3 characters allowed
+                    </mat-error>
+                    <mat-error *ngIf="publishFormSubmitted && ucsForm.get('customerTestimonials2')">
+                      * Please enter valid details
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <ng-container *ngIf="!testimonial1 || !testimonial2">
+                <a href="javascript:void(0);" (click)="addmoretestimonial(1)"
+                  class="ct-add-more add-more-link overview-addmore-box">
+                  <div class="add-more-pos">
+                    <img src="assets/images/red-plus.svg" width="26px" height="26px" />
+                    <span class="add-more">Add More</span>
+                    <span class="max-items">Max 3</span>
+                  </div>
+                </a>
+              </ng-container>
+
+              <!-- <ng-container *ngIf="addtesti1 == true">
+                <a href="javascript:void(0);" (click)="addmoretestimonial(2)"
+                  class="ct-add-more add-more-link overview-addmore-box">
+                  <div class="add-more-pos">
+                    <img src="assets/images/red-plus.svg" style="margin-top: 21px;" width="26px" height="26px" />
+                    <span class="add-more">Add More</span>
+                    <span class="max-items">Max 3</span>
+                  </div>
+                </a>
+              </ng-container> -->
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+
+        <ng-container>
+          <div class="white-box pev-box">
+            <div class="rcf-group pt-0 mb-10">
+              <div class="display-flex align-center overview-flex mb-10">
+                <div class="bf-label fw-400">Product explainer videos (YouTube/Vimeo URLs)</div>
+                <div class="ml-auto word-count"></div>
+              </div>
+
+            </div>
+            <video width="100%" height="315" *ngIf="isMp4Url(urlSafe)" [src]="urlSafe" controls
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              [src]="urlSafe" allowfullscreen></video>
+            <iframe width="100%" height="315" *ngIf="!isMp4Url(urlSafe)" [src]="urlSafe" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+            <div class="rcf-group pt-0">
+              <label class="field-label mb-0 pl-10">Video URL</label>
+              <input type="text" (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+                formControlName="productExplainerVideos"
+                (click)="makeEabelDisableForm('productExplainerVideos','enable')" name="productExplainerVideos"
+                 class="n-form-control border-none" placeholder="YouTube / Vimeo URLs" trim/>
+              <a href="javascript:void(0);" *ngIf="publishedStatus == 'published'" class="attachment_icon"
+                [ngClass]="{'disable-icon': this.ucs_user_role=='startupGuestUser'}" style="position: absolute; background-color: white;
+                    margin-left: -36px;" (click)="openModal(template,value='1')">
+                <i class="material-icons">attach_file</i>
+              </a>
+              <!-- <div class="gengric-email-error" *ngIf="videoUrl"
+              style="margin-top: -22px; font-size: 13px; color: red;">
+              Video URL is required.
+            </div> -->
+            </div>
+
+            <video width="100%" height="315" *ngIf="isMp4Url(url1Safe)" [src]="url1Safe" controls
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              [src]="urlSafe" allowfullscreen></video>
+            <iframe width="100%" height="315" *ngIf="!isMp4Url(url1Safe)" [src]="url1Safe" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+            <div class="rcf-group pt-0">
+              <label class="field-label mb-0 pl-10">Video URL</label>
+              <input type="text" (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+                formControlName="productExplainerVideos1"
+                (click)="makeEabelDisableForm('productExplainerVideos1','enable')" name="productExplainerVideos1"
+                 class="n-form-control border-none" placeholder="YouTube / Vimeo URLs" trim/>
+              <a href="javascript:void(0);" class="attachment_icon" *ngIf="publishedStatus == 'published'"
+                [ngClass]="{'disable-icon': this.ucs_user_role=='startupGuestUser'}" style="position: absolute;  background-color: white;
+                    margin-left: -36px;" (click)="openModal(template,value='2')">
+                <i class="material-icons">attach_file</i>
+              </a>
+            </div>
+
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row pd-22  mb-35" *ngIf="overViewDetails.type != 'usecase'">
+      <div class="col-md-4">
+        <div class="white-box pd-20">
+          <div class="rcf-group pt-0 mb-0">
+            <div class="display-flex align-center overview-flex">
+              <div class="bf-label fw-400">Annual recurring revenue (USD/Yr)</div>
+              <div class="ml-auto word-count"></div>
+            </div>
+            <input type="text" (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable" usd-only (click)="makeEabelDisableForm('annualRevenue','enable')" formControlName="annualRevenue" name=""
+              class="n-form-control input-bold-font" trim="blur" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="white-box pd-20">
+          <div class="rcf-group pt-0 mb-0">
+            <div class="display-flex align-center overview-flex">
+              <div class="bf-label fw-400">ROI of Solution(%)<span style="color: red;">*</span></div>
+              <div class="ml-auto word-count"></div>
+            </div>
+            <input (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+              (click)="makeEabelDisableForm('roi','enable')" type="text" name="" formControlName="roi"
+              class="n-form-control input-bold-font" value="" placeholder="XX.XX" appPercentageDirective id="percentage-number" trim="blur" />
+          </div>
+          <div class="gengric-email-error" *ngIf="ucsForm.get('roi').hasError('required') && (this.publishFormSubmitted || ucsForm.get('roi').touched)"
+            style=" font-size: 13px; color: red;">
+            * ROI of Solution is required.
+          </div>
+          <div class="gengric-email-error" style=" font-size: 13px; color: red;"
+            *ngIf="ucsForm.get('roi').hasError('maxlength') && !ucsForm.get('roi')">
+            * Maximum 10 characters allowed
+          </div>
+
+          <div class="gengric-email-error" style=" font-size: 13px; color: red;"
+            *ngIf="ucsForm.get('roi') && !ucsForm.get('roi').hasError('required')">
+            * Please enter valid details
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="white-box pd-20">
+          <div class="rcf-group pt-0 mb-0">
+            <div class="display-flex align-center overview-flex">
+              <div class="bf-label fw-400">Total number of customer<span style="color: red;">*</span></div>
+              <div class="ml-auto word-count"></div>
+            </div>
+            <div class="input-field">
+              <input (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+              onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+              (click)="makeEabelDisableForm('totalCustomers','enable')" type="text" name=""
+              formControlName="totalCustomers" class="n-form-control input-bold-font" value="" maxlength="10" trim="blur"/>
+            </div>
+          </div>
+          <div class="gengric-email-error" *ngIf="ucsForm.get('totalCustomers').hasError('required') && (this.publishFormSubmitted || ucsForm.get('totalCustomers').touched)"
+            style=" font-size: 13px; color: red;">
+            * Total number of customer is required.
+          </div>
+          <div class="gengric-email-error" style=" font-size: 13px; color: red;"
+            *ngIf="ucsForm.get('totalCustomers').hasError('maxlength') && !ucsForm.get('totalCustomers')">
+            * Maximum 10 characters allowed
+          </div>
+
+          <div class="gengric-email-error" style=" font-size: 13px; color: red;"
+            *ngIf="ucsForm.get('totalCustomers') && !ucsForm.get('totalCustomers').hasError('required')">
+            * Please enter valid details
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="rcf-group" *ngIf="overViewDetails.type != 'usecase'">
+          <div class="row">
+            <div class="col-12">
+              <div class="overview-white-box overview-min-height">
+                <ng-container *ngIf="tagsLoader == false">
+                  <div class="tags-block">
+                    <label class="marquee-customers-label">Name some of your customers (Fortune 500 or above)</label>
+
+                    <input (focusout)="checkAtleastOnEditable()" [readonly]="!isEditable"
+                      (click)="makeEabelDisableForm('marqueeCustomers','enable')" formControlName="marqueeCustomers"
+                      type="text" name="" class="n-form-control input-bold-font" value="" trim="blur"/>
+                  </div>
+                  <div class="gengric-email-error" *ngIf="marqueeCustomers"
+                    style="margin-top: -22px; font-size: 13px; color: red;">
+                    Marquee Customers is required.
+                  </div>
+
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rcf-group">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="overview-white-box minh-189">
+                <ng-container *ngIf="tagsLoader == false">
+                  <div class="tags-block"   [ngClass]="{'tags-block2':this.checkLenth == 1}">
+                    <label class="marquee-customers-label csa-label fw-400">Tags <span style="color: red;">*</span>
+                      <span style="opacity: 1 !important;" *ngIf="this.isStartup == true;" tooltip="Minimum 1 tag and maximum 3 tags are allowed." placement="top">
+                            <img src="assets/images/info.svg" width="16px" height="16px" />
+                    </span>
+<!--                       <span *ngIf="this.isStartup == true;" class="info-block">
+                        <img src="assets/images/info.svg" width="16px" height="16px" />
+                        <div class="info-content-box font-weight-bold" style="left: -82px !important;font-size: 12px;">Minimum 1 tag and maximum 3 tags are allowed.</div>
+                      </span> -->
+                    </label>
+                    <div class="pos-rel tag-white-box" *ngIf="this.isStartup == true;">
+                      <ng-select (focusout)="checkAtleastOnEditable()"  [hideSelected]="true"  maxSelectedItems="3" placeholder="SelectF item"
+                        (click)="makeEabelDisableForm('selectedtags','enable')" [multiple]="true" [clearable]="false"
+                        formControlName="selectedtags" [searchable]="true"
+                        [disabled]="!tagSelectIsEnable || !isEditable"
+                        (change)="checkValue(selectedtags,'selectedtags')" [addTag]="addNewTag" >
+                        <ng-option [disabled]="!isEditable" *ngFor="let tag of items" [value]="tag.key">{{tag.value}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                    <div class="pos-rel tag-white-box" *ngIf="this.isStartup == false;">
+                      <ng-select (focusout)="checkAtleastOnEditable()" placeholder="SelectF item"
+                        (click)="makeEabelDisableForm('selectedtags','enable')" [multiple]="true" [hideSelected]="true" [clearable]="false"
+                        formControlName="selectedtags" [searchable]="true"
+                        [disabled]="!tagSelectIsEnable || !isEditable"
+                        (change)="checkValue(selectedtags,'selectedtags')" [addTag]="addNewTag">
+                        <ng-option [disabled]="!isEditable" *ngFor="let tag of items" [value]="tag.key">{{tag.value}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="gengric-email-error" *ngIf="tagsError"
+                    style="margin-top: -22px; font-size: 13px; color: red;">
+                    Tags is required.
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="overview-white-box minh-189">
+                <div class="rcf-group pt-0 mb-17">
+                  <label class="marquee-customers-label csa-label fw-400">Industry <span style="color: red;">*</span></label>
+                  <ng-container *ngIf="industriesLoaders == true">
+                    <div class="text-center m-t-30 industry-loader">
+                      <div class="preloader pl-size-xs">
+                        <div class="spinner-layer pl-purple">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="pos-rel" id="IndustrDiv" [ngClass]="{'disabled-field': isIndustryDisabled == true}">
+                    <ng-container *ngIf="industriesLoaders == false">
+                      <mat-form-field class="example-full-width industry-select"
+                        (click)="makeEabelDisableForm('industry', 'enable')">
+                        <mat-select (focusout)="checkAtleastOnEditable()" formControlName="industry"
+                          (selectionChange)="checkValue(ucsForm.get('industry').value,'industry')">
+                          <ng-container *ngFor="let industry of industries">
+                            <mat-option *ngIf="isEditable" [disabled]="this.industryDisabled == true"
+                              [value]="industry.value">{{ industry.value }}
+                            </mat-option>
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                      <div class="gengric-email-error" *ngIf="industryError"
+                        style="margin-top: -22px; font-size: 13px; color: red;">
+                        Industry is required.
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="rcf-group pt-0 mb-0">
+                  <label class="marquee-customers-label csa-label fw-400">Function <span style="color: red;">*</span></label>
+                  <ng-container *ngIf="functionLoader == true">
+                    <div class="text-center m-t-30 industry-loader">
+                      <div class="preloader pl-size-xs">
+                        <div class="spinner-layer pl-purple">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <div class="pos-rel" id="FuncDiv" [ngClass]="{'disabled-field': isFunctionDisabled == true}">
+                    <ng-container *ngIf="functionLoader == false">
+                      <mat-form-field class="example-full-width industry-select"
+                        (click)="makeEabelDisableForm('function', 'enable')">
+                        <mat-select (focusout)="checkAtleastOnEditable()" formControlName="function"
+                          [disabled]="this.industryDisabled == true || !isEditable"
+                          (selectionChange)="checkValue(ucsForm.get('function').value,'function')">
+                          <ng-container *ngFor="let function of functions">
+                            <mat-option *ngIf="isEditable" [disabled]="!isEditable" [value]="function.value">
+                              {{ function.value }}
+                            </mat-option>
+                            <!-- <mat-option *ngIf="isEditable && this.ucsLength == 0" [value]="function.value">{{ function.value }}</mat-option> -->
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                      <div class="gengric-email-error" *ngIf="functionError"
+                        style="margin-top: -22px; font-size: 13px; color: red;">
+                        Function is required.
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="overview-white-box minh-189 technology-field">
+                <div class="rcf-grup" *ngIf="technoLoader == true">
+                  <label class="marquee-customers-label csa-label fw-400">Technologies <span style="color: red;">*</span></label>
+                  <span tooltip="One technology is required" placement="top">
+                          <img src="assets/images/info.svg" width="16px" height="16px" />
+                  </span>
+                  <div class="text-center m-t-30 industry-loader">
+                    <div class="preloader pl-size-xs">
+                      <div class="spinner-layer pl-purple">
+                        <div class="circle-clipper left">
+                          <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                          <div class="circle"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-container *ngIf="technoLoader == false">
+                  <div class="tags-block">
+                    <label class="marquee-customers-label csa-label fw-400">Technologies <span style="color: red;">*</span></label>
+                    <span tooltip="One technology is required" placement="top">
+                      <img src="assets/images/info.svg" width="16px" height="16px" />
+                    </span>
+                    <div class="pos-rel tag-white-box">
+                      <ng-select (focusout)="checkAtleastOnEditable()"
+                        (click)="makeEabelDisableForm('techonolgy', 'enable')" placeholder="Select item"
+                        [multiple]="true" [clearable]="false" formControlName="techonolgy" [searchable]="true"
+                        [disabled]="isTechoDisabled">
+                        <ng-option [disabled]="!isEditable" *ngFor="let techonolgy of technologies"
+                          [value]="techonolgy.value">{{
+                              techonolgy.value
+                        }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </ng-container>
+                <div class="gengric-email-error" *ngIf="technoError"
+                  style="margin-top: -22px; font-size: 13px; color: red;">
+                  Technologies is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="overViewDetails.type != 'solution'">
+          <div class="col-md-12">
+            <div class="rcf-group">
+              <div class="overview-white-box sd-count">
+                <label class="marquee-customers-label csa-label fw-400">Short Description <span style="color: red;">*</span></label>
+                <div class="pos-rel" (click)="makeEabelDisableForm('shortDesc', 'enable')">
+                  <div class="input-field">
+                    <textarea (focusout)="checkAtleastOnEditable()"
+                    (change)="checkValue(ucsForm.get('shortDesc').value,'shortDesc')" rows="3" class="form-control"
+                    formControlName="shortDesc" id="shortDesc" [readonly]="!shortDescIsEnabled" required maxlength="500" appTextCount trim="blur"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="gengric-email-error" *ngIf="shortError" style="margin-top: -22px; font-size: 13px; color: red;">
+              Short Description is required.
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="overViewDetails.type != 'solution'">
+          <div class="col-md-12">
+            <div class="rcf-group">
+              <div class="overview-white-box">
+                <label class="marquee-customers-label csa-label fw-400">Long Description</label>
+                <div class="pos-rel" (click)="makeEabelDisableForm('longDesc', 'enable')">
+                  <div class="editor">
+                    <ckeditor (blur)="checkAtleastOnEditable()" formControlName="longDesc"
+                     [config]="ckEditorConfig" [disabled]="!longDescIsEnabled || !isSampleEditable">
+                  </ckeditor> 
+ <!--                      <ckeditor formControlName="longDesc" (focusout)="checkAtleastOnEditable()" [config]="ckEditorConfig"
+                       [disabled]="!longDescIsEnabled || !isSampleEditable">
+                    </ckeditor>
+                   <ngx-editor (focusout)="checkAtleastOnEditable()"
+                    formControlName="longDesc" [disabled]="!longDescIsEnabled || !isSampleEditable"></ngx-editor> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="overViewDetails.type != 'usecase'">
+    <div class="col-md-12">
+      <div class="rcf-group">
+        <div class="overview-white-box overview-min-height">
+          <ng-container>
+            <div class="tags-block">
+              <label class="marquee-customers-label csa-label fw-400">Case Study Attached
+                <span>(doctype supported: PDF, PPTX, DOCX)</span>
+                <span tooltip="Please upload a case study detailing the solution provided by the startup" placement="top">
+                  <img src="assets/images/info.svg" width="16px" height="16px" />
+                </span>
+              </label>
+              <!-- <input (click)="makeEabelDisableForm('marqueeCustomers','enable')"  formControlName="marqueeCustomers"  type="text" name="" class="n-form-control input-bold-font" value="" /> -->
+              <div class="pos-rel csa-box">
+                <div class="file-picker-component">
+                  <form enctype="multipart/form-data" name="frm">
+                    <div class="custom-file-upload">
+                      <ng-container
+                        *ngIf="this.ucs_user_role!= 'startupGuestUser' && this.getfilename != '' && this.getfilename != undefined">
+                        <input style="z-index: 99;" type="file" (click)="fileAlreadyExist($event)" accept=".pdf,.pptx,.docx" class="" />
+                      </ng-container>
+                      <ng-container
+                        *ngIf="this.ucs_user_role!= 'startupGuestUser' && (this.getfilename == '' || this.getfilename == undefined)">
+                        <input style="z-index: 99;" type="file" accept=".pdf,.pptx,.docx" class=""
+                          (change)="handle1FileInput($event.target.files)" />
+                      </ng-container>
+                      <label class="btn waves-effect add-file-label col-2">Attach file</label>
+                    </div>
+                    <ng-container *ngIf="this.ucs_user_role=='startupGuestUser'">
+                      <input style="z-index: 99;" type="file" accept=".pdf,.pptx,.docx" class="" disabled
+                        (change)="handle1FileInput($event.target.files)" />
+                    </ng-container>
+                    <div class="required-tag" style="display: none;">* Required</div>
+                  </form>
+                </div>
+
+                <div class="csa-pos">
+                  <div *ngIf="uploadResLoader" class="spinner-border" style="color: #ff5242 !important;" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  <span
+                    *ngIf="this.getfilename != '' && this.getfilename != undefined && !uploadResLoader">{{this.getfilename}}</span>
+                  <button *ngIf="this.getfilename != '' && this.getfilename != undefined && !uploadResLoader"
+                    [disabled]="!isEditable" mat-icon-button color="accent" (click)="removeRes()"
+                    title="Delete {{this.getfilename}}" class="">
+                    <span class="del-icon"></span>
+                  </button>
+                  <a *ngIf="this.getfilename != '' && this.getfilename != undefined && !uploadResLoader"
+                    href="javascript:void(0)" (click)="getDownloadDocumentPath(getfilename)"
+                    title="Download {{this.getfilename}}">
+                    <img src="assets/images/rs-download.svg" width="25px" height="25px" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="gengric-email-error" *ngIf="casestudyError" style="font-size: 13px; color: red;">
+              Case Study is required.
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-right">
+    <!-- <button class="transparent-btn">Discard</button> -->
+    <ng-container *ngIf="publishedStatus == 'unpublished' && overViewLoader == false
+    && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser)">
+      <button class="red-btn pull-right pos-rel mt-0" [disabled]="publishBtnLoader || !isEditable"
+        (click)="publish(overViewDetails.type)">
+        Publish
+        <div class="css-loader-btn" *ngIf="publishBtnLoader">
+          <div class="sbl-circ"></div>
+        </div>
+      </button>
+    </ng-container>
+    <ng-container *ngIf="publishedStatus == 'published'  && overViewLoader == false
+    && (ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser)">
+      <button mat-raised-button color="warn" class="publisBtn  pull-right pos-rel ml-auto mt-0"
+        style="margin-bottom: 10px; margin-right: 10px; text-align: left;" [disabled]="true">
+        Published
+      </button>
+    </ng-container>
+    <ng-container *ngIf="isUcsPromoted == true ">
+      <ng-container *ngIf="publishedStatus == 'published' ">
+        <button *ngIf="ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser"
+          class="btn bg-red waves-effect" style="margin-bottom: 10px; text-align: left; margin-right: 10px;"
+          [(ngModel)]="isUcsPromoted" (click)="stopPromoting(isUcsPromoted)">
+          Opt-out Promotion
+        </button>
+      </ng-container>
+    </ng-container>
+  </div>
+</form>
+<ng-template #template>
+  <div class="custom-modal-with-blue">
+    <div class="blue-heading">
+      Video Resources
+      <a href="javascript:void(0);" (click)="closeDialog()" class="ct-close close-modal">
+        <span class="close-icon"></span>
+        Close
+      </a>
+    </div>
+    <div class="blue-modal-body custom-field">
+      <div class="field-group">
+        <ng-container>
+          <div class="text-center">
+            <div class="preloader-box">
+              <div class=" pl-size-l">
+                <div class="spinner-layer pl-orange">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container>
+          <form class="share-form">
+            <div class="share-resource-table-scroll">
+              <table class="custom-table share-resource-table" style="width: 100%;">
+                <tbody>
+                  <ng-container *ngFor="let res of resourceList; let i = index">
+                    <tr>
+                      <td style="width: 90%;">
+                        <a href="javascript:void(0);" title="{{res.file}}"><span
+                            class="file-name-without-extension resourse-file">{{res.file}}</span></a>
+                      </td>
+                      <td style="width: 10%;">
+                        <input type="checkbox" [checked]="selectedResource == 'checkebox_'+i"
+                          (change)="changeResource(i,$event,res.file)" />
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </div>
+            <button *ngIf="resourceList.length != 0" (click)="selectResource()" mat-raised-button color="warn"
+              class="publisBtn  pull-right pos-rel ml-auto mt-0"
+              style="margin-bottom: 10px; margin-right: 10px; text-align: left;" [disabled]="!isFileSelected">
+              Save
+            </button>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="resourseLoader == false && resourceList.length == 0">
+          <div class="text-center m-t-30">
+            <div class="text2 recnotfound">
+              No video found.
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>

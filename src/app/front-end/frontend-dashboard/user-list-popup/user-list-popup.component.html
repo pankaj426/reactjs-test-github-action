@@ -1,0 +1,86 @@
+<div class="custom-modal-with-blue">
+    <ng-container>
+        <div [ngClass]="[isGuest?'guest-heading' : 'blue-heading' ]">
+            <!--Use class for guest user "guest-heading"-->
+            Participants
+            <a href="javascript:void(0);" (click)="closeDialog()" class="ct-close close-modal">
+                <span class="close-icon"></span>
+                Close
+            </a>
+        </div>
+        <div class="blue-modal-body custom-field">
+            <form [formGroup]="sendInviteFrm" *ngIf="!isGuest">
+                <div class="field-group">
+                    <div class="pos-rel">
+                        <div class="inivite-search-block">
+                            <input formControlName="email" type="text" [readonly]="!isEditable" name=""
+                                class="search-field" placeholder="Enter mail ID to add participant" trim />
+                            <button class="red-btn minw-170  pos-rel" (click)="sendInvite()"
+                                [disabled]="shareingLoader || !isEditable">Share /
+                                Invite
+                                <div class="css-loader-btn" *ngIf="shareingLoader">
+                                    <div class="sbl-circ"></div>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="gengric-email-error" *ngIf="sendInviteFrm.controls.email.hasError('email')  &&
+                        sendInviteFrm.controls.email.touched">
+                            Please enter valid email address
+                        </div>
+                        <div class="gengric-email-error" *ngIf="genricError"
+                            style="margin-top: -22px; font-size: 13px; color: red;">
+                            Generic domain emails are not accpetable.
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="field-group">
+                <div class="participant-list">
+                    <ng-container *ngIf="usersList.sharedUsers != null && usersList.sharedUsers.length > 0">
+                        <ng-container *ngFor="let user of usersList.sharedUsers; let i = index">
+                            <div class="participant-list-box">
+                                <div class="display-flex align-center">
+                                    <div class="circle-box circle-user{{i+1}}">
+                                        {{user.fullname.split(' ')[0].substr(0,1)}}
+                                        <ng-container *ngIf="user.fullname.split(' ')[1] != undefined">
+                                            {{user.fullname.split(' ')[1].substr(0,1)}}
+                                        </ng-container>
+                                    </div>
+                                    <ng-container
+                                        *ngIf="user.organization[0].role != 'corporateGuestUser' && user.organization[0].role != 'startupGuestUser' ">
+                                        <div class="participant-name">{{user.fullname}}</div>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="user.organization[0].role == 'corporateGuestUser' || user.organization[0].role == 'startupGuestUser' ">
+                                        <div class="participant-name">{{user.fullname}}<span
+                                                class="uesrguest">Guest</span></div>
+                                    </ng-container>
+                                    <div class="ml-auto"
+                                        *ngIf="!isGuest && usersList.created_by != user._id && isEditable">
+                                        <a href="javascript:void(0);"
+                                            (click)="deleteUser(user._id,user.email,user.fullname.split(' ')[0],i)"
+                                            class="remove-link">Remove</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+
+
+                    </ng-container>
+
+
+                    <div class="preloader-box" style="top: 60% !important;" *ngIf="this.overViewLoader == true">
+                        <div class="preloader pl-size-l">
+                            <div class="spinner-layer pl-orange">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

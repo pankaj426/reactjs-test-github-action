@@ -1,0 +1,109 @@
+
+          <!-- <mat-tab label="Resources"> -->
+            <div class="page-sec resource-page tab-page-scroll"
+              [ngClass]="{ 'min-height-page pos-rel': resourseLoader == true }">
+              <div class="preloader-box" *ngIf="resourseLoader">
+                <div class="preloader pl-size-l">
+                  <div class="spinner-layer pl-orange">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="resourseLoader == false && resourceList.length == 0">
+                <div class="no-message-box text-center">
+                  <div class="resource-title">Doctype supported: PDF, PPTX, DOCX,PNG, Mp4, JPG, JPEG, CSV, XLS
+                  </div>
+                  <div class="no-msg-img">
+                    <img src="assets/images/resource-no-data-found.png" />
+                  </div>
+                  <div class="no-msg-heading">No Files uploaded yet!</div>
+                  <div class="no-msg-content maxw-50"></div>
+                  <div class="text-center">
+                    <div class="mt-50 no-msg-btn-block">
+                      <div class="custom-upload text-center">
+                        <form *ngIf="isSampleEditable" enctype="multipart/form-data" name="frm">
+                          <input type="file" class="file-hidden-input" (change)="handleFileInput($event.target.files)"
+                            required />
+                          <span class="red-btn">Upload Resource</span>
+                        </form>
+                        <div class="uploaded-file-component">
+                          <ng-container *ngIf="uploadResLoader == true">
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                          </ng-container>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="resourseLoader == false && resourceList.length > 0">
+                <div class="white-box resource-box">
+                  <div class="display-flex align-center resource-header">
+                    <div class="resource-title">Doctype supported: PDF, PPTX, DOCX,PNG, Mp4, JPG, JPEG, CSV, XLS
+                    </div>
+                    <div class="ml-auto">
+                      <span class="add-recourse">
+                        <div class="ucs-file-picker-block">
+                          <div *ngIf="isSampleEditable" class="file-picker-component">
+                            <form enctype="multipart/form-data" name="frm">
+                              <input type="file" class="file-hidden-input" [readonly]="!isSampleEditable"
+                                (change)="handleFileInput($event.target.files)" required />
+                            </form>
+                            <div class="btn waves-effect add-file-label">
+                              Upload resource
+                            </div>
+                          </div>
+                          <div class="uploaded-file-component">
+                            <ng-container *ngIf="uploadResLoader == true">
+                              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="resourse-table-label">Files</div>
+                  <div class="resource-table-scroll">
+                    <table class="resource-table" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <ng-container *ngFor="let res of resourceList; let i = index">
+                        <tr>
+                          <td width="65%">
+                            <a href="javascript:void(0);" (click)="getDownloadPath(res.file)"
+                              title="Download {{res.file}}"><span
+                                class="file-name-without-extension resourse-file">{{res.file}}</span></a>
+                          </td>
+                          <td width="20%">
+                            <div class="custom-slide-toggle">
+                              <span class="slide-label active" *ngIf="res.status == 'public'">Public</span>
+
+                              <mat-slide-toggle class="example-margin" (change)="updateRes($event,res._id,i)"
+                                [color]=" color" [checked]="showPubPraivateRes(res.status)"
+                                [disabled]="!isSampleEditable">
+                              </mat-slide-toggle>
+
+                              <span class="slide-label" *ngIf="res.status == 'private'">Private</span>
+                            </div>
+                          </td>
+                          <td width="5%">
+                            <button [disabled]="!isSampleEditable" mat-icon-button color="accent"
+                              (click)="removeRes(res._id,i)" title="Delete {{res.file}}" class="">
+                              <span class="del-icon"></span>
+                            </button>
+                          </td>
+                          <td width="5%">
+                            <button mat-icon-button color="accent" (click)="getDownloadPath(res.file)"
+                              title="Download {{res.file}}" class="">
+                              <span class="download-icon"></span>
+                            </button>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </table>
+                  </div>
+                </div>
+              </ng-container>
+
+            </div>
+          <!-- </mat-tab> -->

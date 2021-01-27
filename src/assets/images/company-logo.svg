@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45" viewBox="0 0 45 45">
+  <defs>
+    <clipPath id="clip-Logo_on_black_bg_45x45">
+      <rect width="45" height="45"/>
+    </clipPath>
+  </defs>
+  <g id="Logo_on_black_bg_45x45" data-name="Logo on black bg 45x45" clip-path="url(#clip-Logo_on_black_bg_45x45)">
+    <rect width="45" height="45" fill="#fff"/>
+    <g id="Group_1855" data-name="Group 1855" transform="translate(-79.432 535.047)">
+      <g id="Group_1850" data-name="Group 1850" transform="translate(91.707 -523.047)">
+        <path id="Path_10478" data-name="Path 10478" d="M112.043-523.047h-7.286v7.286l3.643,3.643h7.286V-519.4Z" transform="translate(-104.757 523.047)" fill="#f9a31a"/>
+        <path id="Path_10479" data-name="Path 10479" d="M122.974-523.047h-3.642l-3.643,3.643v7.286H108.4l-3.643,3.643v7.286h7.286l3.643-3.643,3.643,3.643h7.286v-7.286l-3.643-3.643,3.643-3.643v-7.286Z" transform="translate(-104.759 523.047)" fill="#f05856"/>
+      </g>
+      <g id="Group_1852" data-name="Group 1852" transform="translate(80.432 -517.383)">
+        <g id="Group_1851" data-name="Group 1851">
+          <path id="Path_10480" data-name="Path 10480" d="M82.679-500.42l1-1.193v-8.826H82.2l-1.683,2.313h-.08v-2.7h8.884v2.7h-.073l-1.69-2.312H86.075v8.826l.988,1.193v.125H82.679Z" transform="translate(-80.432 510.826)" fill="#fff"/>
+        </g>
+      </g>
+      <g id="Group_1854" data-name="Group 1854" transform="translate(115.083 -517.383)">
+        <g id="Group_1853" data-name="Group 1853" transform="translate(0 0)">
+          <path id="Path_10481" data-name="Path 10481" d="M155.191-500.421l1-1.193v-7.9l-1-1.193v-.124H163.1v2.874h-.074l-1.757-2.488h-2.686v4.6h1.72l1.237-1.281h.132v3.081h-.129l-1.237-1.412h-1.72v3.842l1.142,1.193v.125h-4.538Z" transform="translate(-155.191 510.827)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

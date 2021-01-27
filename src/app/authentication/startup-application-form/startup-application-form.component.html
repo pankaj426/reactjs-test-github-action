@@ -1,0 +1,685 @@
+<app-singup-page-header title="Startup Application Form"></app-singup-page-header>
+<section class="content content ml-20 mr-0">
+  <div class="page-sec start-profile-form dash-pt-26">
+    <div class="limiter" *ngIf="successMessage == '' && errorMessage == ''">
+      <div class="container-login100 background-transparent full-page-form">
+        <div class="wrap-login100">
+          <form class="login100-form validate-form custom-field edittable-from" [formGroup]="startUpform"
+            (ngSubmit)="submit()" enctype="multipart/form-data">
+            <!-- <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <span class="login100-form-title m-b-10 text-center">
+                  <img src="assets/images/x-future.svg" />
+                </span>
+              </div> -->
+            <!-- <span class="login100-form-title m-b-10">
+                Startup Application Form
+              </span> -->
+            <!--    {{startUpform.value|json}} -->
+            <div class="alert alert-danger alert-dismissible" *ngIf="errorMessage">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {{ errorMessage }}
+            </div>
+            <div class="alert alert-success alert-dismissible" *ngIf="successMessage">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {{ successMessage }}
+            </div>
+            <div>
+              <!-- startup-application-form-scrollbar -->
+              <div class="heading-block">
+                <div class="display-flex align-center outside-header">
+                  <div class="back-block"><a href="javascript:void(0);" (click)="redirectToLogin()"><span
+                        class="back-icon"></span> Back to Login</a>
+                  </div>
+                  <!-- <div class="text-center outside-header-text">Fill the application form to apply
+                  </div> -->
+                </div>
+                <div class="head-title">Startup Application Form</div>
+                <div class="head-subtitle">Please enter the required information to apply with your startup</div>
+              </div>
+              <div class="white-box mb-40">
+                <!-- <div class="row pd-40-block">
+                  <div class="col-md-4">
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Company Name</mat-label>
+                        <input matInput formControlName="name" required />
+                        <mat-error *ngIf="startUpform.get('name').hasError('required')">
+                          Company Name is required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Full Name</mat-label>
+                        <input matInput formControlName="fullname" required />
+                        <mat-error *ngIf="startUpform.get('fullname').hasError('required')">
+                          Please enter full name.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>User Location</mat-label>
+                        <input matInput formControlName="userLocation" required />
+                        <mat-error *ngIf="startUpform.get('userLocation').hasError('required')">
+                          *Please enter user location.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Website Link</mat-label>
+                        <input matInput formControlName="website" required />
+                        <mat-error *ngIf="startUpform.get('website').hasError('required')">
+                          * Please write website
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="rcf-group">
+                      <ng-container *ngIf="industriesLoaders == true">
+                        <div class="text-center m-t-30 industry-loader">
+                          <div class="preloader pl-size-xs">
+                            <div class="spinner-layer pl-purple">
+                              <div class="circle-clipper left">
+                                <div class="circle"></div>
+                              </div>
+                              <div class="circle-clipper right">
+                                <div class="circle"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="industriesLoaders == false">
+                        <mat-form-field class="example-full-width industry-dropdown">
+                          <mat-select #industrySelect placeholder="Select Industry*" formControlName="industry"
+                            name="industry" multiple required>
+                            <mat-select-trigger>
+                              {{
+                                startUpform.get("industry")
+                                  ? startUpform.get("industry").value[0].value
+                                  : ""
+                              }}
+                              <span *ngIf="startUpform.get('industry').value?.length > 1"
+                                class="example-additional-selection">
+                                (+{{ startUpform.get("industry").value.length - 1 }}
+                                {{
+                                  startUpform.get("industry").value?.length === 2
+                                    ? "other"
+                                    : "others"
+                                }})
+                              </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let industry of industries" [value]="industry">{{ industry.value }}
+                            </mat-option>
+                            <mat-option disabled="disabled" class="filter-option">
+                              <div style="margin-bottom: 15px;">
+                                <button mat-raised-button class="mat-primary fill text-sm" (click)="hideSeletePanel()">
+                                  Done
+                                </button>
+                              </div>
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="startUpform.get('industry').hasError('required')">
+                            * Industry is required
+                          </mat-error>
+                        </mat-form-field>
+                      </ng-container>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Email Address</mat-label>
+                        <input matInput formControlName="applicant_email" required />
+                        <mat-error *ngIf="
+                          startUpform.get('applicant_email').hasError('required') &&
+                          !startUpform.get('applicant_email').touched
+                        ">
+                          * Please write email address
+                        </mat-error>
+                        <mat-error *ngIf="startUpform.get('applicant_email').touched">
+                          * Please write valid email address
+                        </mat-error>
+                      </mat-form-field>
+                      <div class="gengric-email-error" *ngIf="genricError"
+                        style="margin-top: -22px; font-size: 13px; color: red;">
+                        Generic Domain Email Ids are not accpetable
+                      </div>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Startup Location</mat-label>
+                        <input matInput formControlName="startupLocation"  required />
+                        <mat-error *ngIf="startUpform.get('startupLocation').hasError('required')">
+                          *Please select startup location.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="rcf-group">
+                      <div class="row ml-0 mr-0">
+                        <div class="col-md-4 pl-0 pr-0">
+
+                            <select style="border-top:0px;border-left:0px;border-right:0px;padding-bottom: 4px;color: rgba(0, 50, 101, 0.5);" (change)="resetPhoneNumber($event)"     [(ngModel)]="selectedCountry" [ngModelOptions]="{standalone: true}">
+                              <option *ngFor="let countryCode of countryCodes" [ngValue]="countryCode.code" data="countryCode.name" data-imagesrc='../../../assets/flags/{{getFlags(countryCode.name)}}'>{{countryCode.dial_code}}</option>
+                            </select>
+
+                        </div>
+                        <div class="col-md-8 pr-0">
+                          <mat-form-field class="example-full-width">
+                            <mat-label>Mobile Number</mat-label>
+                            <input  matInput  (change)="formatPhoneNumber($event)" (keypress)="numberOnly($event)" formControlName="phoneNumber"
+                              required />
+                            <mat-error
+                              *ngIf="startUpform.get('phoneNumber').hasError('required') && startUpform.get('phoneNumber').touched">
+                              Mobile Number is required.
+                            </mat-error>
+
+                            <mat-error
+                              *ngIf="startUpform.get('phoneNumber').hasError('wrongNumber') &&  startUpform.get('phoneNumber').touched && startUpform.get('phoneNumber').dirty">
+                              Please enter valid phone number.
+                            </mat-error>
+
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="rcf-group mb-0">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Brief Description</mat-label>
+                        <textarea matInput formControlName="description" rows="8"  required></textarea>
+                        <mat-error *ngIf="startUpform.get('description').hasError('required')">
+                          * Please write description
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="sub-heading">Basic Details</div>
+                <div class="display-flex bd-flex">
+                  <div class="bd-flex-left">
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Company Name</mat-label>
+                        <input matInput formControlName="name" required trim="blur" />
+                        <mat-error *ngIf="submitted && startUpform.get('name').hasError('required')">
+                          Company Name is required
+                        </mat-error>
+                        <mat-error
+                          *ngIf="submitted && startUpform.get('name').hasError('maxlength') && !startUpform.get('name').hasError('whitespace')">
+                          * Maximum 80 characters allowed
+                        </mat-error>
+                        <mat-error
+                          *ngIf="submitted && startUpform.get('name').hasError('minlength') && !startUpform.get('name').hasError('whitespace')">
+                          * Minimum 3 characters allowed
+                        </mat-error>
+                        <mat-error
+                          *ngIf="submitted && startUpform.get('name').hasError('whitespace') && !startUpform.get('name').hasError('required')">
+                          * Please enter valid details
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Email Address</mat-label>
+                        <input matInput formControlName="applicant_email" required trim />
+                        <mat-error *ngIf="
+                        submitted && startUpform.get('applicant_email').hasError('required') &&
+                          !startUpform.get('applicant_email').touched
+                        ">
+                          * Please enter email address
+                        </mat-error>
+                        <mat-error *ngIf="submitted && startUpform.get('applicant_email').touched">
+                          * Please enter email address
+                        </mat-error>
+                      </mat-form-field>
+                      <div class="gengric-email-error" *ngIf="genricError"
+                        style="margin-top: -22px; font-size: 13px; color: red;">
+                        Generic Domain Email Ids are not accpetable
+                      </div>
+                    </div>
+                    <div class="rcf-group">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Website Link</mat-label>
+                        <input matInput formControlName="website" required trim />
+                        <mat-error *ngIf="submitted && startUpform.get('website').hasError('required')">
+                          * Please enter Website link
+                        </mat-error>
+                        <mat-error *ngIf="submitted && startUpform.get('website').hasError('pattern')">
+                          * Enter valid details
+                        </mat-error>
+
+                      </mat-form-field>
+                    </div>
+                    <ng-container formArrayName="foundersLinkedIn"
+                      *ngFor="let alias of foundersLinkedIn.controls; let index=index;">
+                      <div class="rcf-group">
+                        <mat-form-field class="example-full-width">
+                          <mat-label>Founders LinkedIn id</mat-label>
+                          <input matInput trim [formControlName]="index" required pattern="^https:\/\/[a-z]{2,3}\.linkedin\.com\/.*$" />
+                          <mat-error *ngIf="submitted && foundersLinkedIn.controls[index].hasError('required')">
+                            * Please enter Linkedin Link
+                          </mat-error>
+                          <mat-error *ngIf="
+                          submitted && foundersLinkedIn.controls[index].hasError('pattern') &&
+                          (foundersLinkedIn.controls[index].touched || submitted)
+                          ">
+                            * Please enter valid linkedIn detail
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <ng-container *ngIf="index == 0 ">
+                        <a href="javascript:void(0);" (click)="addmore('', 'foundersLinkedIn')" class="add-more-link">
+                          <img src="assets/images/red-plus.svg" width="26px" height="26px" />
+                        </a>
+                      </ng-container>
+                      <ng-container *ngIf="index > 0">
+                        <a href="javascript:void(0);" (click)="remove(index,'foundersLinkedIn')" class="remove-link">
+                          <img src="assets/images/red-minus.svg" width="26px" height="26px" />
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div class="bd-flex-right">
+                    <div class="rcf-group mb-0">
+                      <!-- <mat-form-field class="example-full-width" apperiance="none">
+                        <mat-label>Brief Description</mat-label>
+                        <textarea matInput formControlName="description" rows="8"  required></textarea>
+                        <mat-error *ngIf="startUpform.get('description').hasError('required')">
+                          * Please write description
+                        </mat-error>
+                      </mat-form-field> -->
+                      <mat-form-field class="example-full-width bb-none">
+                        <div class="border-field">
+                          <div class="display-flex align-center bf-header-block">
+                            <div class="bf-label">Describe the problem your solution is solving
+                              <span class="red">*</span>
+                              <span class="info-test">
+                                <img src="assets/images/info.svg" width="16px" height="16px" (click)="showInfobox()" />
+                                <div class="info-content-box dpss" *ngIf="dpss" id="someDiv"> Nikon Positioning Statement
+                                  For (Creative professionals with an eye for capturing and sharing the beauty), (Nikon)
+                                  is a (digital point and shoot) that delivers ( a window to their world), so they (
+                                  experience deeper connections through a shared perspective) because ( of Nikon's
+                                  100-year history of developing new technologies that allow you to capture and share
+                                  your experience in their purest form, it's as if you were there).</div>
+                              </span>
+                            </div>
+                            <!-- <div class="ml-auto word-count">Max 500 Characters</div> -->
+                          </div>
+                          <div class="input-field">
+                            <textarea matInput formControlName="description" class="form-control" maxlength="500"
+                              appTextCount trim="blur"></textarea>
+                          </div>
+                        </div>
+                        <mat-error *ngIf="submitted && startUpform.get('description').hasError('required')">
+                          * Enter valid details
+                        </mat-error>
+                        <mat-error
+                          *ngIf="submitted && startUpform.get('description').hasError('maxlength') && !startUpform.get('description').hasError('whitespace')">
+                          * Maximum 500 characters allowed
+                        </mat-error>
+                        <mat-error
+                          *ngIf="submitted && startUpform.get('description').hasError('minlength') && !startUpform.get('description').hasError('whitespace')">
+                          * Minimum 3 characters allowed
+                        </mat-error>
+                        <mat-error
+                          *ngIf="submitted && startUpform.get('description').hasError('whitespace') && !startUpform.get('description').hasError('required')">
+                          * Please enter valid details
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="white-box mb-30 qc-white-box ">
+                <div class="sub-heading">Criteria that will help you qualify</div>
+                <div class="rcf-group">
+                  <div class="display-flex align-center qc-flex">
+                    <div class="qc-flex-left">
+                      <div class="n-custom-label mb-0">Amount of fortune 500 paid customers <span
+                          class="reuired-field">*</span></div>
+                    </div>
+                    <div class="qc-flex-right">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" required name="paidCustomers" formControlName="paidCustomers" class="n-form-control" trim="blur">
+                        <mat-error *ngIf="submitted && startUpform.get('paidCustomers').hasError('required')">
+                          * Enter valid details
+                        </mat-error>
+                     <!--   <mat-error *ngIf="submitted && startUpform.get('paidCustomers').hasError('pattern')">
+                          * Valid alphanumeric value only
+                        </mat-error>
+                        <mat-error *ngIf="submitted && startUpform.get('paidCustomers').hasError('maxlength')">
+                          * Maximum 5 characters allowed
+                        </mat-error>
+                         <mat-error class="error"
+                          *ngIf="!startUpform.get('paidCustomers').valid && !startUpform.get('paidCustomers').hasError('required')">
+                          <p>Please enter valid input </p>
+                        </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="rcf-group">
+                  <div class="display-flex align-center qc-flex">
+                    <div class="qc-flex-left">
+                      <div class="n-custom-label mb-0">How many of paid customers you cater, have more than USD 500 mn
+                        in revenue? <span class="reuired-field">*</span></div>
+                    </div>
+                    <div class="qc-flex-right">
+                      <mat-form-field class="example-full-width">
+                        <input matInput type="text" required name="paidCustomersGreaterRevenue" formControlName="paidCustomersGreaterRevenue" class="n-form-control" trim="blur">
+                        <mat-error *ngIf="submitted && startUpform.get('paidCustomersGreaterRevenue').hasError('required')">
+                          * Enter valid details
+                        </mat-error>
+                     <!--    <mat-error *ngIf="submitted && startUpform.get('paidCustomersGreaterRevenue').hasError('pattern')">
+                          * Valid alphanumeric value only
+                        </mat-error>
+                       <mat-error *ngIf="submitted && startUpform.get('paidCustomersGreaterRevenue').hasError('maxlength')">
+                          * Maximum 5 characters allowed
+                        </mat-error>
+                         <mat-error class="error"
+                          *ngIf="!startUpform.get('paidCustomersGreaterRevenue').valid && !startUpform.get('paidCustomersGreaterRevenue').hasError('required')">
+                          <p>Please enter valid input </p>
+                        </mat-error> -->
+
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="rcf-group">
+                  <div class="display-flex align-center qc-flex">
+                    <div class="qc-flex-left">
+                      <div class="n-custom-label mb-0">What is your annual recurring revenue (ARR)?<span class="reuired-field">*</span></div>
+                    </div>
+                    <div class="qc-flex-right">
+                      <mat-form-field class="example-full-width">
+                        <div class="pos-rel">
+                          <div class="cl-label">USD</div>
+                          <input matInput type="text" required name="annualRecurringRevenue" formControlName="annualRecurringRevenue"
+                            class="n-form-control" usd-only trim="blur">
+                          <div class="cl-label right-0">Per year</div>
+                        </div>
+                        <mat-error *ngIf="submitted && startUpform.get('annualRecurringRevenue').hasError('required')">
+                          * Enter valid details
+                        </mat-error>
+                     <!--   <mat-error *ngIf="submitted && startUpform.get('annualRecurringRevenue').hasError('pattern')">
+                          * Valid alphanumeric value only
+                        </mat-error>
+                         <mat-error class="error"
+                          *ngIf="!startUpform.get('annualRecurringRevenue').valid && !startUpform.get('annualRecurringRevenue').hasError('required')">
+                          <p>Please enter valid input </p>
+                        </mat-error>
+                        <mat-error *ngIf="submitted && startUpform.get('annualRecurringRevenue').hasError('maxlength')">
+                          * Maximum 5 characters allowed
+                        </mat-error> -->
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="rcf-group">
+                    <div class="display-flex align-center qc-flex">
+                      <div class="qc-flex-left">
+                        <div class="n-custom-label mb-0">What is your annual recurring revenue (ARR)?<span class="reuired-field">*</span></div>
+                      </div>
+                      <div class="input-field">
+                        <textarea matInput formControlName="patentDetails" class="form-control" maxlength="500"
+                          appTextCount trim="blur"></textarea>
+                      </div>
+                    </div>
+                    <mat-error *ngIf="submitted && startUpform.get('patentDetails').hasError('required')">
+                      * Please enter have you filed or granted a patent for the solution offering or the research paper
+                    </mat-error>
+                    <mat-error
+                      *ngIf="submitted && startUpform.get('patentDetails').errors && startUpform.get('patentDetails').errors.trimError && !startUpform.get('patentDetails').hasError('required')">
+                      {{startUpform.get('patentDetails').errors.trimError.value}}
+                    </mat-error>
+                    <mat-error
+                      *ngIf="submitted && startUpform.get('patentDetails').hasError('maxlength') && !startUpform.get('patentDetails').hasError('whitespace')">
+                      * Maximum 500 characters allowed
+                    </mat-error>
+                    <mat-error
+                      *ngIf="submitted && startUpform.get('patentDetails').hasError('minlength') && !startUpform.get('patentDetails').hasError('whitespace')">
+                      * Minimum 3 characters allowed
+                    </mat-error>
+                    <mat-error
+                      *ngIf="submitted && startUpform.get('patentDetails').hasError('whitespace') && !startUpform.get('patentDetails').hasError('required')">
+                      * Please enter valid details
+                    </mat-error>
+
+                  </mat-form-field>
+                </div>
+                <div class="rcf-group">
+                  <div class="n-custom-label">Are you currently engaging in any (paid or unpaid) collaborations (i.e POC) with fortune 500 companies?<span
+                      class="reuired-field">*</span></div>
+                  <mat-form-field class="example-full-width bb-none">
+                    <div class="border-field qc-block">
+                      <div class="bf-header-block">
+                        <div class="ml-auto word-count">Max 500 Characters</div>
+                      </div>
+                      <div class="input-field">
+                        <textarea matInput formControlName="custmersPOC" class="form-control" maxlength="500"
+                          appTextCount trim="blur"></textarea>
+                      </div>
+                      <mat-error *ngIf="submitted && startUpform.get('patentDetails').hasError('required')">
+                        * Please enter have you filed or granted a patent for the solution offering or the research paper
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('patentDetails').errors && startUpform.get('patentDetails').errors.trimError && !startUpform.get('patentDetails').hasError('required')">
+                        {{startUpform.get('patentDetails').errors.trimError.value}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('patentDetails').hasError('maxlength') && !startUpform.get('patentDetails').hasError('whitespace')">
+                        * Maximum 500 characters allowed
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('patentDetails').hasError('minlength') && !startUpform.get('patentDetails').hasError('whitespace')">
+                        * Minimum 3 characters allowed
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('patentDetails').hasError('whitespace') && !startUpform.get('patentDetails').hasError('required')">
+                        * Please enter valid details
+                      </mat-error>
+
+                  </mat-form-field>
+                </div>
+                <div class="rcf-group">
+                  <div class="n-custom-label">Are you currently engaging in any Govt/ Semi Govt/ University projects? <span class="reuired-field">*</span></div>
+                  <mat-form-field class="example-full-width bb-none">
+                    <div class="border-field qc-block">
+                      <div class="bf-header-block">
+                        <div class="ml-auto word-count">Max 500 Characters</div>
+                      </div>
+                      <div class="input-field">
+                        <textarea matInput formControlName="pilotProjects" class="form-control" maxlength="500"
+                          appTextCount trim="blur"></textarea>
+                      </div>
+                      <mat-error *ngIf="submitted && startUpform.get('custmersPOC').hasError('required')">
+                        * Please enter do you startup have any POC’s
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('custmersPOC').errors && startUpform.get('custmersPOC').errors.trimError && !startUpform.get('custmersPOC').hasError('whitespace')">
+                        {{startUpform.get('custmersPOC').errors.trimError.value}}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('custmersPOC').hasError('maxlength') && !startUpform.get('custmersPOC').hasError('whitespace')">
+                        * Maximum 500 characters allowed
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('custmersPOC').hasError('minlength') && !startUpform.get('custmersPOC').hasError('whitespace')">
+                        * Minimum 3 characters allowed
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('custmersPOC').hasError('whitespace') && !startUpform.get('custmersPOC').hasError('required')">
+                        * Please enter valid details
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                  <div class="rcf-group">
+                    <div class="n-custom-label">Are you currently engaging in any Govt/ Semi Govt/ University projects? <span class="reuired-field">*</span></div>
+                    <mat-form-field class="example-full-width bb-none">
+                      <div class="border-field qc-block">
+                        <div class="bf-header-block">
+                          <div class="ml-auto word-count">Max 500 Characters</div>
+                        </div>
+                        <div class="input-field">
+                          <textarea matInput formControlName="pilotProjects" class="form-control" maxlength="500"
+                            appTextCount></textarea>
+                        </div>
+                      </div>
+                      <div class="input-field">
+                        <textarea matInput formControlName="otherInformation" class="form-control" maxlength="500"
+                          appTextCount trim="blur"></textarea>
+                      </div>
+                      <mat-error *ngIf="submitted && startUpform.get('otherInformation').hasError('required')">
+                        * Please enter Is there anything else you would like to add.
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('otherInformation').hasError('maxlength') && !startUpform.get('otherInformation').hasError('whitespace')">
+                        * Maximum 500 characters allowed
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('otherInformation').hasError('minlength') && !startUpform.get('otherInformation').hasError('whitespace')">
+                        * Minimum 3 characters allowed
+                      </mat-error>
+                      <mat-error
+                        *ngIf="submitted && startUpform.get('otherInformation').hasError('whitespace') && !startUpform.get('otherInformation').hasError('required')">
+                        * Please enter valid details
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="info-text">The X Future is in early access phase of our Enterprise Innovation Platform. In case you need any help, reach out to support@thexfuture.com</div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3 col-sm-3">
+
+                </div>
+                <div class="col-md-6 col-sm-9 text-right">
+                  <div class="captcha-btn-block fl-right">
+                    <div class="ml-auto captcha-block">
+                      <re-captcha (resolved)="resolved($event)" siteKey="6LcWSb4ZAAAAAP6_4rm7c7qwR0pcJvLX2LwLURvI">
+                      </re-captcha>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-sm-12 text-right">
+                  <button style="margin-top: 14px;" mat-flat-button color="primary" class="red-btn w-100 lh-40"
+                    type="submit">
+                    <!-- <div class="btn-loader2" *ngIf="startupLoader">Loading...</div> -->
+                    Submit
+                    <div class="css-loader-btn" *ngIf="startupLoader">
+                      <div class="sbl-circ"></div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <!-- <div class="text-left m-t-30 mb-20">
+                <span class="text2">
+                  <a href="javascript:void(0);" (click)="redirectToLogin()" class="red-link">Terms and conditions and
+                    Privacy policy.</a>
+                </span>
+              </div> -->
+            </div>
+          </form>
+          <!--  <div
+              class="login100-more"
+              style="background-image: url('assets/images/pages/home-login.jpg');"
+            ></div> -->
+        </div>
+      </div>
+    </div>
+    <div class="limiter" *ngIf="successMessage != ''">
+      <!-- *ngIf="successMessage != ''" -->
+      <div class="container-login100 background-transparent full-page-form">
+        <div class="wrap-login100 display-block">
+          <div class="white-box alert-white-box w-100">
+            <form class="login100-form validate-form custom-field edittable-from" novalidate>
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <span class="login100-form-title m-b-30" style="text-align: center;">
+                  <img src="assets/images/x-future.svg" />
+                </span>
+              </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <span class="error-subheader p-b-5 p-t-30 rest-pass-success">
+                    <div class="text-center mb-20"><img src="assets/images/success.svg" width="44px" height="44px" />
+                    </div>
+                    <div class="text-center success mb-20 text-success">
+                      {{ successMessage }}
+                    </div>
+                  </span>
+                </div>
+              </div>
+              <div class="container-login100-form-btn">
+                <button mat-flat-button color="primary" class="red-btn w-100 mxw-350"
+                  [routerLink]="['/authentication/signin']">
+                  Continue to Login
+                </button>
+              </div>
+              <div class="text-center m-t-50">
+                <span class="text2">
+                  <a href="javascript:void(0);" class="red-link"> Terms and Conditions and Privacy Policy.</a>
+                </span>
+              </div>
+            </form>
+          </div>
+          <!--  <div
+              class="login100-more"
+              style="background-image: url('assets/images/pages/home-login.jpg');"
+            ></div> -->
+        </div>
+      </div>
+    </div>
+    <div class="limiter" *ngIf="errorMessage != ''">
+      <!-- *ngIf="errorMessage != ''" -->
+      <div class="container-login100 background-transparent full-page-form">
+        <div class="wrap-login100 display-block">
+          <div class="white-box alert-white-box w-100">
+            <form class="login100-form validate-form custom-field edittable-from" novalidate>
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <span class="login100-form-title m-b-30" style="text-align: center;">
+                  <img src="assets/images/x-future.svg" />
+                </span>
+              </div>
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <span class="error-subheader p-b-5 p-t-30 rest-pass-success">
+                    <div class="text-center mb-20"><img src="assets/images/error.svg" width="44px" height="44px" />
+                    </div>
+                    <div class="text-center success mb-20 text-danger">
+                      {{ errorMessage }}
+                    </div>
+                  </span>
+                </div>
+              </div>
+              <div class="container-login100-form-btn">
+                <button mat-flat-button color="primary" class="red-btn w-100 mxw-350"
+                  [routerLink]="['/authentication/signin']">
+                  Continue to Login
+                </button>
+              </div>
+              <div class="text-center m-t-50">
+                <span class="text2" (click)="redirectToLogin()">
+                  <a href="javascript:void(0);" class="red-link">Terms and Conditions and
+                    Privacy Policy.</a>
+                </span>
+              </div>
+            </form>
+          </div>
+          <!--  <div
+              class="login100-more"
+              style="background-image: url('assets/images/pages/home-login.jpg');"
+            ></div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

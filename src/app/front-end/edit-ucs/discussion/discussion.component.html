@@ -1,0 +1,360 @@
+<div class="messaging">
+    <div class="display-flex side-tabs discussion-tabs">
+      <div class="tab-left">
+        <ul class="chat-side-tab">
+          <ng-container *ngIf="availabeDiscType.length > 0">
+            <ng-container *ngFor="let discType of availabeDiscType; let i = index">
+              <li [ngClass]="discType.activeClass">
+                <a href="javascript:void(0);" title="{{discType.value}}" (click)="filterDiscussionType(discType.key,i)"><span
+                    [ngClass]="discType.class"></span>
+                  <div class="chat-side-tab-label">{{discType.value}}</div>
+                </a>
+              </li>
+            </ng-container>
+          </ng-container>
+        </ul>
+      </div>
+      <div class="tab-right">
+        <div class="inbox_msg">
+          <div class="inbox_people" [ngClass]="descMobChatBoxVisible == true ? 'hide' : ''">
+            <div class="inbox_chat_border">
+              <div class="inbox_chat discussion_chat scroll">
+                <ng-container *ngIf="discussions.length > 0 && discussionLoader == false">
+                  <ng-container
+                    *ngFor="let discuss of discussions | filterDiscussion: discTypeFilter; let i = index">
+                    <!--  {{discuss | json}} -->
+                    <div class=" chat_list {{ discuss.activeClass }}" (click)="openDesMsgBox(i, discuss._id)"
+                      style="cursor: pointer;">
+                      <!-- active_chat -->
+                      <div class="chat_people display-flex">
+                        <span class="chat_people_icon">
+                          <ng-container *ngIf="discuss.type ==  discussionType.question">
+                            <img src="assets/images/question.svg" width="18px" height="18px" />
+                          </ng-container>
+                          <ng-container *ngIf="discuss.type ==  discussionType.comment">
+                            <img src="assets/images/comment.svg" width="18px" height="18px" />
+                          </ng-container>
+                          <ng-container *ngIf="discuss.type ==  discussionType.challenge">
+                            <img src="assets/images/challenge.svg" width="18px" height="18px" />
+                          </ng-container>
+                          <ng-container *ngIf="discuss.type ==  discussionType.idea">
+                            <img src="assets/images/idea.svg" width="18px" height="18px" />
+                          </ng-container>
+                        </span>
+                        <div class="chat_ib">
+                          <h5>
+                            {{ discuss.title }}
+                          </h5>
+                          <div class="display-flex align-center mt-5" *ngIf="discuss.last_conversation != ''">
+                            <div class="chat_name" style="color:rgba(0, 50, 101, 0.64)">
+                              Last conversation happened
+                              <!-- {{ discuss.name }} -->
+                            </div>
+                            <div class="chat_date ml-auto">
+                              {{
+                                      dateFormatService.momentAgoDateFormat(
+                                        discuss.last_conversation
+                                      )
+                                    }}
+                            </div>
+                          </div>
+                          <!--  <p>Test, which is a new approach to have all solutions
+                                  astrology under one roof.</p> -->
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="add-topic-discussion">
+              <ng-container
+                *ngIf="ucs_user_role != userRoles.corporateGuestUser && ucs_user_role != userRoles.startupGuestUser && isEditable">
+                <a href="javascript:void(0);" (click)="openAddChatFrm()">
+                  + Add New Topic for Discussion
+                </a>
+              </ng-container>
+
+            </div>
+          </div>
+          <div class="mesgs" [ngClass]="descMobChatBoxVisible == true ? 'open' : ''">
+            <div class="pos-rel min-height-page tabRightLoader" *ngIf="discussionLoader">
+              <div class="preloader-box ">
+                <div class="preloader pl-size-l">
+                  <div class="spinner-layer pl-orange">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-container *ngIf="discussions.length > 0 && discussionLoader == false">
+              <div class="chat_connect_box">
+                <a href="javascript:void();" (click)="descToggleMobChatBox()" class="back-chat-arrow"></a>
+                <div class="display-flex align-center question_tagline">
+                  <!-- <div class="circle-img">
+                    <img src="assets/images/user.png" />
+                  </div> -->
+                  <!--  {{selectedDiscussion |json}} -->
+                  <ng-container *ngIf="selectedDiscussion.type ==  discussionType.question">
+                    <img src="assets/images/question.svg" width="22px" height="22px" />
+                  </ng-container>
+                  <ng-container *ngIf="selectedDiscussion.type ==  discussionType.comment">
+                    <img src="assets/images/comment.svg" width="22px" height="22px" />
+                  </ng-container>
+                  <ng-container *ngIf="selectedDiscussion.type ==  discussionType.challenge">
+                    <img src="assets/images/challenge.svg" width="22px" height="22px" />
+                  </ng-container>
+                  <ng-container *ngIf="selectedDiscussion.type ==  discussionType.idea">
+                    <img src="assets/images/idea.svg" width="22px" height="22px" />
+                  </ng-container>
+                  <div class="chat_connect_tagline">
+                    {{ selectedDiscussion.title }}
+                  </div>
+                </div>
+              </div>
+              <div class="mesgs_box">
+                <div class="msg_history_block">
+                  <div class="msg_history">
+                    <ng-container *ngIf="discussionMsgLoader == true">
+                      <div class="preloader-box msg_loader">
+                        <div class="preloader pl-size-l">
+                          <div class="spinner-layer pl-orange">
+                            <div class="circle-clipper left">
+                              <div class="circle"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <div class="msg_pos" [ngClass]="{ msg_length: 4 > discussionMgs.length }">
+                      <ng-container *ngIf="
+                            discussionMgs.length > 0 && discussionMsgLoader == false
+                          ">
+                        <ng-container *ngFor="let msgs of discussionMgs">
+                          <ng-container *ngIf="msgs.receiver_id.length > 0">
+                            <ng-container  *ngIf="toStr(msgs.sender_id) != toStr(userId)">
+                              <div class="incoming_msg">
+                                <div class="received_msg">
+                                  <div class="received_withd_msg">
+                                    <div class="reply-dropdown">
+                                      <a href="javascript:void(0);" class="reply-arrow">
+                                        <img src="assets/images/icon_down-arrow-small.png" />
+                                      </a>
+                                      <ul class="reply-dropdown-menu">
+                                        <li>
+                                          <a href="javascript:void(0);"
+                                            (click)="DiscussionReply($event, msgs._id, msgs.message, msgs.sender_name, msgs.created)">Reply</a>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <p class="reply-box">
+                                      <span class="reply-quote-text" *ngIf="msgs.reply.length > 0">
+                                        <i class="fa fa-quote-left" aria-hidden="true"></i>
+                                      </span>
+                                      <em style="font-style: italic;"
+                                        *ngIf="msgs.reply.length > 0">{{msgs.reply[0].message}}</em>
+                                      <span class="time_date text-left reply-box-top-border"
+                                        *ngIf="msgs.reply.length > 0">
+                                        {{msgs.reply[0].sender_name}}, {{
+                                              dateFormatService.momentAgoDateFormat(
+                                                msgs.reply[0].created
+                                              )
+                                            }}
+                                      </span>
+                                      <span>{{ msgs.message }}
+                                        <span class="time_date text-right">
+                                          {{
+                                        dateFormatService.momentAgoDateFormat(
+                                          msgs.created
+                                        )
+                                      }}
+                                        </span></span>
+                                    </p>
+
+                                    <div class="sender-name">{{
+                                          msgs.sender_name
+                                      }}</div>
+                                    <!-- <span class="time_date">
+                                      <div class="row">
+                                        <div class="col-sm-6 text-left">{{
+                                          msgs.sender_name
+                                      }}</div>
+                                        <div class="col-sm-6 text-right">{{
+                                        dateFormatService.momentAgoDateFormat(
+                                          msgs.created
+                                        )
+                                      }}</div>
+                                      </div>
+                                    </span> -->
+                                  </div>
+                                </div>
+                              </div>
+                            </ng-container>
+                          </ng-container>
+                          <div class="outgoing_msg" *ngIf="toStr(msgs.sender_id) == toStr(userId)">
+                            <div class="sent_msg">
+                              <div class="reply-dropdown">
+                                <a href="javascript:void(0);" class="reply-arrow">
+                                  <img src="assets/images/icon_down-arrow-small.png" />
+                                </a>
+                                <ul class="reply-dropdown-menu">
+                                  <li>
+                                    <a href="javascript:void(0);"
+                                      (click)="DiscussionReply($event, msgs._id, msgs.message, msgs.sender_name, msgs.created)">Reply</a>
+                                  </li>
+                                </ul>
+                              </div>
+                              <p class="reply-box">
+                                <span class="reply-quote-text" *ngIf="msgs.reply.length > 0">
+                                  <i class="fa fa-quote-left" aria-hidden="true"></i>
+                                </span>
+                                <em style="font-style: italic;"
+                                  *ngIf="msgs.reply.length > 0">{{msgs.reply[0].message}}</em>
+                                <span class="time_date text-left reply-box-top-border"
+                                  *ngIf="msgs.reply.length > 0">
+                                  {{msgs.reply[0].sender_name}}, {{
+                                        dateFormatService.momentAgoDateFormat(
+                                          msgs.reply[0].created
+                                        )
+                                      }}
+                                </span>
+                                <span>{{ msgs.message }}
+                                  <span class="time_date text-right">{{
+                                dateFormatService.momentAgoDateFormat(
+                                  msgs.created
+                                )
+                              }}</span></span>
+                              </p>
+                              <div class="sender-name">{{
+                                  msgs.sender_name
+                              }}</div>
+                              <!--
+                              <span class="time_date">
+                                <div class="row">
+                                  <div class="col-sm-6 text-left">{{
+                                  msgs.sender_name
+                              }}</div>
+                                  <div class="col-sm-6 text-right">{{
+                                dateFormatService.momentAgoDateFormat(
+                                  msgs.created
+                                )
+                              }}</div>
+                                </div>
+                              </span> -->
+                            </div>
+                          </div>
+                        </ng-container>
+                        <!--  <div id="chatScrollDiv">
+                          </div> -->
+                      </ng-container>
+
+                      <div id="up"></div>
+                      <!--<ng-container *ngIf="
+                            discussionMgs.length == 0 && discussionMsgLoader == false
+                          ">
+                            <div class="no-message-box text-center">
+                              <div class="no-msg-img">
+                                <img src="assets/images/no-message-img.png" />
+                              </div>
+                              <div class="no-msg-heading">No discussions found</div>
+                              <div class="no-msg-content">Please select discussion in the side panel to view
+                                the
+                                conversation</div>
+                            </div>
+                          </ng-container>-->
+                    </div>
+
+                  </div>
+
+                  <div #taggParticipantList id="participantForTags"
+                    *ngIf="showParticipants && this.ucsParticipants.length > 0"
+                    class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="card">
+                      <div class="tableBody participantbody">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <tbody>
+                              <tr (click)="selectedMenuForDiscussion('all')">
+                                <td class="table-img">
+                                  <mat-icon>supervisor_account</mat-icon>
+                                </td>
+                                <td>
+                                  <div class="media-title">All</div>
+                                </td>
+                              </tr>
+                              <ng-container *ngFor="let participant of participants">
+                                <tr *ngIf="participant._id != localStorageService.userDetails._id"
+                                  (click)="selectedMenuForDiscussion(participant.fullname, participant.id)">
+                                  <td class="table-img">
+                                    <mat-icon>perm_identity</mat-icon>
+                                  </td>
+                                  <td>
+                                    <div class="media-title">{{participant.fullname}}</div>
+                                  </td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="type_msg mt-10">
+                  <div class="input_msg_write">
+                    <ng-container
+                      *ngIf="quoteMessageDiscus != '' && quoteMessageIdDiscus != '' && showReplyBoxDiscus">
+                      <div class="attach-file-block">
+                        <div class="attach-reply-box reply-text-box">
+                          <div class="attach-white-box">
+                            <i class="fa fa-quote-left" aria-hidden="true"></i>
+                            <div class="">
+                              {{quoteMessageDiscus}}
+                            </div>
+                            <div class="attach-file-name">{{quoteMessageSenderDiscus}}, {{ dateFormatService.momentAgoDateFormat(
+                                          quoteMessageDateDiscus
+                                        ) }}</div>
+                            <!--  <div class="attach-file-size">130 KB</div> -->
+                            <a href="javascript:void(0);" (click)=removeQuoteMessageDiscus()
+                              class="attach-close">
+                              <img src="assets/images/blue-cancel.svg" width="15px" height="15px" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                    <form (submit)="sendDiscMessage()" name="frm">
+                      <div class="display-flex align-center add-attach-pin">
+                        <!-- <span class="emoji-block"></span> -->
+                        <textarea autosize autocomplete="off" #discussionmessage type="text" class="write_msg"
+                          name="discussionmessageToSend" [(ngModel)]="discussionmessageToSend"
+                          (focusout)="getDiscussionDraftMessage($event)"
+                          (keypress)="checkInputForDiscussion($event)" [minRows]="1" [maxRows]="4"
+                          [readonly]="!isEditable" (keydown)="keyDownHandlerForDiscussion($event)"
+                          placeholder="Type a message" trim="blur"></textarea>
+                        <button class="msg_send_btn" [disabled]="!isEditable" type="submit">
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="discussions.length == 0 && discussionLoader == false">
+              <div class="no-message-box text-center">
+                <div class="no-msg-img">
+                  <img src="assets/images/no-message-img.png" />
+                </div>
+                <div class="no-msg-heading">No topic for discussion initiated yet</div>
+                <div class="no-msg-content">Please initiate a topic for discussion from add discussion link in
+                  side panel.</div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

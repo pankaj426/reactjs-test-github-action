@@ -1,0 +1,476 @@
+<!-- <div class="addContainer applicaion_modal">
+  <div class="modalHeader">
+    <div class="editRowModal">
+      <div class="modalHeader clearfix">
+        <div class="modal-about">
+          <div class="font-weight-bold p-t-5 p-l-10 font-17">
+            {{ dialogTitle }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <ng-container *ngIf="type == OrgType.corporate">
+    <div mat-dialog-content>
+      <form class="login100-form validate-form" [formGroup]="registerForm">
+        <div class="row">
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Company Name</mat-label>
+              <input matInput formControlName="name" name="name" value="name" disabled />
+              <mat-icon matSuffix>business</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="fullname" name="fullname" value="fullName" disabled />
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Email ID</mat-label>
+              <input matInput formControlName="email" name="email" value="email" disabled />
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="row ml-0 mr-0">
+              <div class="col-md-5 pl-0 pr-0">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Country Code</mat-label>
+                  <mat-select #countryCodeSelect formControlName="countryCode" [compareWith]="compareItems" required>
+                    <mat-select-trigger>
+                      <ng-container *ngIf="getFlags(registerForm.get('countryCode').value.name) != ''">
+                        <img src="../../../assets/flags/{{getFlags(registerForm.get('countryCode').value.name)}}"
+                          width="20px" height="20px" style="vertical-align: -4px;
+                      margin-right: 7px;" /> </ng-container> {{registerForm.get('countryCode').value.dial_code}}
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let cCode of countryCodes" [value]="cCode">
+                      <ng-container *ngIf="getFlags(cCode.name) != ''">
+                        <img src="../../../assets/flags/{{getFlags(cCode.name)}}" width="20px" height="20px" style="vertical-align: -4px;
+                      margin-right: 7px;" />
+                      </ng-container>
+                      {{ cCode.dial_code }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-7 pr-0">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Mobile Number</mat-label>
+                  <input matInput formControlName="phoneNumber" required />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Weblink</mat-label>
+              <input matInput formControlName="website" required />
+              <mat-icon matSuffix>language</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="startupLocation" />
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Industry</label>
+              <ng-container *ngIf="industry?.length > 0">
+                <ng-container *ngFor="let ind of industry">
+                  <span>{{ ind.value }}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="type == OrgType.startup">
+    <div mat-dialog-content>
+      <form class="login100-form validate-form" [formGroup]="registerForm">
+        <div class="row">
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Company Name</mat-label>
+              <input matInput formControlName="name" name="name" value="name" disabled />
+              <mat-icon matSuffix>business</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input matInput formControlName="fullname" name="fullname" value="fullName" disabled />
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Email ID</mat-label>
+              <input matInput formControlName="email" name="email" value="email" disabled />
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="row ml-0 mr-0">
+              <div class="col-md-5 pl-0 pr-0">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Country Code</mat-label>
+                  <mat-select #countryCodeSelect formControlName="countryCode" [compareWith]="compareItems" required>
+                    <mat-select-trigger>
+                      <ng-container *ngIf="getFlags(registerForm.get('countryCode').value.name) != ''">
+                        <img src="../../../assets/flags/{{getFlags(registerForm.get('countryCode').value.name)}}"
+                          width="20px" height="20px" style="vertical-align: -4px;
+                      margin-right: 7px;" /> </ng-container> {{registerForm.get('countryCode').value.dial_code}}
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let cCode of countryCodes" [value]="cCode">
+                      <ng-container *ngIf="getFlags(cCode.name) != ''">
+                        <img src="../../../assets/flags/{{getFlags(cCode.name)}}" width="20px" height="20px" style="vertical-align: -4px;
+                      margin-right: 7px;" />
+                      </ng-container>
+                      {{ cCode.dial_code }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-7 pr-0">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Mobile Number</mat-label>
+                  <input matInput formControlName="phoneNumber" required />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Website</mat-label>
+              <input matInput formControlName="website" required />
+              <mat-icon matSuffix>language</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="startupLocation" />
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" required />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <div class="industry-field">
+              <label>Industry</label>
+              <ng-container *ngIf="industry?.length > 0">
+                <ng-container *ngFor="let ind of industry">
+                  <span>{{ ind.value }}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-{{(12/attachmentsArray.length)}}" *ngFor="let attached of attachmentsArray; index as mi">
+            <div class="form-question-answer">
+              <div class="file-form-input-component">
+                <div class="form-question-title">{{ attached.title }} </div>
+                <div class="file-form-answers">
+                  <ng-container *ngFor="let attachment of attached.attachments; index as ai">
+                    <div class="uploaded-file-component" *ngIf="attachment.uploaded == true">
+                      <div class="file-view-list-item-thumbnail-component">
+                        <div class="file-preview file-preview-icon undefined">
+                          <div>
+                            <i>
+                              <mat-icon matSuffix>insert_drive_file</mat-icon>
+                            </i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="file-name-with-ellipsis-component">
+                        <span class="file-name-without-extension">{{
+                            attachment.doc_name
+                          }}</span>
+                      </div>
+                      <a (click)="getDownloadPath(attachment.details.file)" style="cursor: pointer;" title="download"
+                        href="javascript:void(0);" class="download-icon"><i class="material-icons">file_download</i></a>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Problem your startup is solving</label>
+              <ng-container *ngIf="problemSolving?.length > 0">
+                <ng-container *ngFor="let problem of problemSolving">
+                  <span>{{problem}}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Solution your startup is providing</label>
+              <ng-container *ngIf="solutionProvide?.length > 0">
+                <ng-container *ngFor="let solution of solutionProvide">
+                  <span>{{solution}}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Current Paying Clients</label>
+              <ng-container *ngIf="currentPayingClients?.length > 0">
+                <ng-container *ngFor="let currentPayingClient of currentPayingClients">
+                  <span>{{currentPayingClient}}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"> <label>How did you come to know about The X Future?</label></div>
+          <div class="col-sm-8"> {{knowAboutCorpGini}} </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+</div> -->
+<div class="addContainer applicaion_modal">
+  <div class="modalHeader">
+    <div class="editRowModal">
+      <div class="modalHeader clearfix">
+        <div class="modal-about">
+          <div class="font-weight-bold p-t-5 p-l-10 font-17">
+            {{ dialogTitle }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <ng-container *ngIf="type == OrgType.corporate">
+    <div mat-dialog-content>
+      <form class="login100-form validate-form" [formGroup]="registerForm">
+        <div class="row">
+          <div class="col-sm-4 sdafa">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Company Name</mat-label>
+              <input trim="blur" matInput formControlName="name" name="name" value="name" disabled  />
+              <mat-icon matSuffix>business</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Full Name</mat-label>
+              <input trim="blur" matInput formControlName="fullname" name="fullname" value="fullName" disabled/>
+              <mat-icon matSuffix>account_circle</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Email ID</mat-label>
+              <input trim="blur" matInput formControlName="email" name="email" value="email" disabled/>
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="row ml-0 mr-0">
+              <div class="col-md-5 pl-0 pr-0">
+                <!-- <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Country Code</mat-label>
+                  <mat-select #countryCodeSelect formControlName="countryCode" [compareWith]="compareItems" required>
+                    <mat-select-trigger>
+                      <ng-container *ngIf="getFlags(registerForm.get('countryCode').value.name) != ''">
+                        <img src="../../../assets/flags/{{getFlags(registerForm.get('countryCode').value.name)}}"
+                          width="20px" height="20px" style="vertical-align: -4px;
+                      margin-right: 7px;" /> </ng-container> {{registerForm.get('countryCode').value.dial_code}}
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let cCode of countryCodes" [value]="cCode">
+                      <ng-container *ngIf="getFlags(cCode.name) != ''">
+                        <img src="../../../assets/flags/{{getFlags(cCode.name)}}" width="20px" height="20px" style="vertical-align: -4px;
+                      margin-right: 7px;" />
+                      </ng-container>
+                      {{ cCode.dial_code }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Country Code</mat-label>
+                  <input matInput formControlName="countryCode" required trim="blur"/>
+
+                </mat-form-field>
+               </div>
+              <div class="col-md-7 pr-0">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Mobile Number</mat-label>
+                  <input matInput formControlName="phoneNumber" required trim="blur"/>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Weblink</mat-label>
+              <input matInput formControlName="website" required trim="blur"/>
+              <mat-icon matSuffix>language</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="startupLocation" trim="blur"/>
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Industry</label>
+              <ng-container *ngIf="industry?.length > 0">
+                <ng-container *ngFor="let ind of industry">
+                  <span>{{ ind.value }}</span>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="type == OrgType.startup">
+    <div mat-dialog-content>
+      <form class="login100-form validate-form add-border-infield" [formGroup]="registerForm">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Company Name</label>
+              <span>{{details.name}}</span>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Email ID</label>
+              <span>{{details.applicant_email}}</span>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Website</label>
+              <span>{{details.website}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Founders Linkedin Id</label>
+              <span  *ngFor="let linkedin of details.founder_linkedin_profiles" ><a target="_blank" href="{{linkedin}}">{{linkedin}}</a></span>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="industry-field">
+              <label>Total Customers</label>
+              <span>{{details.additional_fields.totalCustomers}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Describe the problem your solution is solving</label>
+              <span>{{details.description}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Amount of fortune 500 paid customers</label>
+              <span>{{details.additional_fields.paidCustomers}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>How many of paid customers you cater, have more than USD 500 mn in revenue?</label>
+              <span>{{details.additional_fields.paidCustomersGreaterRevenue}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>What is your annual recurring revenue (ARR)?</label>
+              <span>{{details.additional_fields.annualRecurringRevenue}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Have you filed or was granted a patent for the solution offering or has any research paper for your solution offering has been published in a reputable journal? Please provide details</label>
+              <span>{{details.additional_fields.patentDetails}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Are you currently engaging in any (paid or unpaid) collaborations (i.e POC) with fortune 500 companies?</label>
+              <span>{{details.additional_fields.custmersPOC}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Are you currently engaging in any Govt/ Semi Govt/ University projects?</label>
+              <span>{{details.additional_fields.pilotProjects}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="industry-field">
+              <label>Is there anything else you would like to add? (Add positive“signals” to help your next partner find you more easily).</label>
+              <span>{{details.additional_fields.otherInformation}}</span>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+</div>
